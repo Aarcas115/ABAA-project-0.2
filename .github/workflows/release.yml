@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create Release Archive
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+
+          # Create archive without git history
+          git archive --format=zip --prefix=ace-framework/ HEAD -o ace-framework-${VERSION}.zip
+          git archive --format=tar.gz --prefix=ace-framework/ HEAD -o ace-framework-${VERSION}.tar.gz
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          echo "Generating changelog..."
+          # Get commits since last tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            CHANGELOG=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" --no-merges -20)
+          fi
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ace-framework-*.zip
+            ace-framework-*.tar.gz
+          body: |
+            ## ACE-Framework ${{ github.ref_name }}
+
+            ### Installation
+
+            **Option 1: Use as GitHub Template**
+            Click "Use this template" on the repository page.
+
+            **Option 2: CLI**
+            ```bash
+            npx create-ace-framework my-project
+            ```
+
+            **Option 3: Download**
+            Download the archive below and extract to your project.
+
+            ### Changes
+            ${{ steps.changelog.outputs.changelog }}
+          draft: false
+          prerelease: false

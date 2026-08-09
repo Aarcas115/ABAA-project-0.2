@@ -1,0 +1,61 @@
+name: Validate Framework
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate Structure
+        run: |
+          echo "Validating ACE-Framework structure..."
+
+          # Required directories
+          dirs=(".ace" ".ace/standards" ".ace/skills" ".ace/roles" ".ace/knowledge" "docs" "docs/adr" "docs/context" "docs/rca")
+          for dir in "${dirs[@]}"; do
+            if [ ! -d "$dir" ]; then
+              echo "❌ Missing directory: $dir"
+              exit 1
+            fi
+            echo "✓ Directory exists: $dir"
+          done
+
+          # Required files
+          files=(".aceconfig" "README.md" "ACE-SPEC.md" ".ace/roles/roles.md" "docs/context/ACTIVE_CONTEXT.md")
+          for file in "${files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Missing file: $file"
+              exit 1
+            fi
+            echo "✓ File exists: $file"
+          done
+
+          echo "✅ Framework structure is valid!"
+
+      - name: Validate Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: '**/*.md'
+          config: '.markdownlint.json'
+        continue-on-error: true
+
+      - name: Check YAML Syntax
+        run: |
+          echo "Checking YAML files..."
+          for file in $(find . -name "*.yaml" -o -name "*.yml" | grep -v node_modules); do
+            python3 -c "import yaml; yaml.safe_load(open('$file'))" && echo "✓ Valid: $file" || echo "❌ Invalid: $file"
+          done
+
+      - name: Validate Links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --verbose --no-progress '**/*.md'
+          fail: false
