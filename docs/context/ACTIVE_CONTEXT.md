@@ -1,19 +1,19 @@
-# Active Context: v2.7.0 Loop Engineering — Release Complete
+# Active Context: ABAA — Scaffold Setup
 
 ## Session Metadata
 
-- **Last Updated:** 2026-07-05
-- **Session ID:** v2.7-loop-engineering
-- **Active Role:** QA Engineer
-- **Mode:** VERIFICATION (complete)
+- **Last Updated:** 2026-08-11
+- **Session ID:** abaa-phase1-kickoff
+- **Active Role:** Architect
+- **Mode:** DISCUSS
 
 ---
 
 ## Current Objective
 
-v2.7.0 "Loop Engineering" executed end to end: all 10 plan tasks (M1–M4),
-both ADRs, all documentation, and all verification drills. Ready for push,
-merge, tag, and npm publish.
+Finish trimming the ACE Framework scaffold down to what ABAA actually needs,
+then have the Architect role generate the initial PROJECT_CONTEXT document
+capturing the full five-phase roadmap before Phase 1 implementation begins.
 
 ---
 
@@ -21,22 +21,24 @@ merge, tag, and npm publish.
 
 ### Working
 
-- **Branch**: `feature/v2.7-loop-engineering-m1` — one commit per task, all
-  gated by the repo's own verify gate (cli test suite, 89 tests passing).
-- **M1 Honest Gate**: tasks.json schema + validator, real verify.sh, loop guards.
-- **M2 Loop Runner**: `ace-framework loop` orchestrator; claude-code + manual
-  runners (ADR-002); enforced Claude Code hooks (`--adapter claude-code`).
-- **M3 Learning Loop** *(experimental)*: auto-Reflector with strict output
-  contract; Curator staged→promoted|expired lifecycle (ADR-003);
-  `ace-framework curate`; JSONL telemetry + `loop --report`.
-- **M4 Release**: ACE-SPEC §13, USER_GUIDE §13, README, CHANGELOG, CLAUDE.md,
-  version 2.7.0 synced everywhere, validate.sh extended, .gitattributes
-  eol=lf for .sh, walkthrough with drill evidence
-  (docs/planning/v2.7.0_loop_engineering_walkthrough.md).
+- Repo scaffolded from ACE Framework (jonnabio/ace-framework), pushed to
+  `Aarcas115/ABAA-project-0.2`.
+- Scaffold cleanup: removed `.ace/packs/` (ai-research, scientific — not
+  applicable), the phantom link mechanism (`.ace/prompts/bootstrap_phantom_link.md`,
+  `.ace/skills/phantom-link/`, `scripts/phantom_link.py`), `.cursor/` and
+  `.cursorrules` (not using Cursor IDE), and `.github/` (framework's own
+  distribution/CI tooling, not applicable to a solo project).
+- Kept `.ace/adapters/claude-code/`, the full `.ace/skills/` set, `.vscode/`,
+  and `cli/` (the framework's own scaffolding tool) for potential future use.
+- Stack decisions locked: React + Vite (plain JavaScript, not TypeScript),
+  Python backend, OpenRouter free tier, Aider (`py -3.12 -m aider`) as the
+  execution tool, Render for Phase 2 hosting.
 
 ### In Progress
 
-- None.
+- Finishing `docs/` cleanup (removing ACE's own dev-history files:
+  ADR-001–003, planning walkthroughs/analyses tied to ACE's v2.5.0/v2.7.0
+  releases, ACE_FRAMEWORK_BLOG_POST.md).
 
 ### Blocked
 
@@ -46,38 +48,44 @@ merge, tag, and npm publish.
 
 ## Next Steps (human actions)
 
-1. [ ] Review the branch; merge to main; tag `v2.7.0`.
-2. [ ] Publish `create-ace-framework@2.7.0` to npm.
-3. [ ] Post-push smoke test: `npx create-ace-framework tmp --adapter claude-code`
-       then `ace-framework loop --dry-run` in it (scaffolder clones GitHub main,
-       so this only works after the merge).
+1. [ ] Finish remaining `docs/` deletions.
+2. [ ] Have Aider's Architect role generate the initial PROJECT_CONTEXT.md,
+       capturing the full five-phase roadmap (not just Phase 1).
+3. [ ] Begin Phase 1 discuss: scope the paste-transcript → Requirements
+       Spec + Task Breakdown + SOW pipeline in detail.
+4. [ ] Have Architect role generate the first task breakdown for Phase 1.
 
-## v2.8 Candidates
+---
 
-- Parallel Generators (needs a lock protocol; deferred per plan Open Items).
-- Live headless claude-code session in CI.
-- Configurable promotion thresholds/expiry in `.aceconfig` (deferred per ADR-003).
+## Phase Roadmap Reference
+
+See docs/context/PROJECT_CONTEXT.md (to be generated) for the full five-phase
+roadmap: (1) Core Pipeline MVP, (2) Cloud Deployment on Render, (3) Video
+Input, (4) UI/UX Pass, (5) Final Touches & Deployment.
 
 ---
 
 ## Active Constraints
 
 ### Standards
-- .ace/standards/harness-engineering.md v2.7.0 (§5.1 rule lifecycle)
 
-### Plan / ADRs
-- docs/planning/implementation_plan_v2.7_loop_engineering.md (all tasks done)
-- ADR-002 (runner interface), ADR-003 (rule promotion)
+- `.ace/standards/environment.md` — needs review/update to reflect actual
+  dev environment (Windows, VS Code, PowerShell) before Phase 1 tasks are
+  generated.
 
 ---
 
 ## Session Notes
 
-- The E2E dogfood drill caught a real bug (manual runner hanging on closed
-  stdin → silent exit 0 mid-loop) — fixed and regression-tested. The drill
-  earned its place in the release checklist.
-- The repo now dogfoods its own machinery: verify.sh runs the CLI suite,
-  and every release commit passed through it.
+- This file previously contained ACE Framework's own v2.7.0 release session
+  state (unrelated to ABAA) and has been reset for this project.
+
+---
+
+## Context Links
+
+- **Roadmap:** docs/context/PROJECT_CONTEXT.md (pending)
+- **Spec:** ACE-SPEC.md
 
 ---
 
