@@ -2,12 +2,7 @@
 # Version: 2.7.0
 
 version: "2.7.0"
-project_name: "ACE Framework Project"
-
-# Expansion Packs (Modular config loading)
-includes:
-  - .ace/packs/scientific/.aceconfig-ext
-  - .ace/packs/ai-research/.aceconfig-ext
+project_name: "ABAA"
 
 # Entry point for AI agents - files always loaded
 entry:
@@ -73,7 +68,7 @@ role_routing:
 # if ALL commands are empty/missing, verify.sh fails - an unconfigured
 # gate must never silently pass.
 verify:
-  test_cmd: "cd cli && npm test"
+  test_cmd: ""
   lint_cmd: ""
   typecheck_cmd: ""
 
