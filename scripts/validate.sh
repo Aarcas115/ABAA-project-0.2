@@ -180,7 +180,6 @@ echo ""
 
 # IDE configs
 echo "IDE Configuration (optional):"
-check_file_warn ".cursorrules"
 check_file_warn ".editorconfig"
 check_file_warn ".vscode/settings.json"
 echo ""
