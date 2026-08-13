@@ -14,33 +14,33 @@ ABAA (AI Business Analyst Assistant) is a web app that automates a Business Anal
 
 ## Visual Style
 
-- **Density**: [Open - not yet decided]
-- **Theme**: [Open - not yet decided]
-- **Component Library**: [Open - not yet decided]
-- **Typography**: [Open - not yet decided]
+- **Density**: Compact
+- **Theme**: Dark mode default
+- **Component Library**: None — plain Tailwind utility classes, no component library
+- **Typography**: System font stack (no custom web fonts for Phase 1)
 
 ---
 
 ## API Design
 
-- **Style**: [Open - not yet decided]
-- **Error Format**: [Open - not yet decided]
-- **Auth Strategy**: [Open - not yet decided]
-- **Versioning**: [Open - not yet decided]
+- **Style**: REST
+- **Error Format**: Simple JSON { "error": "message" } — no RFC 7807, no envelope structure
+- **Auth Strategy**: None for Phase 1 (no user accounts, stateless single-session tool)
+- **Versioning**: None yet — single unversioned endpoint set until multi-version need arises
 
 ---
 
 ## Data Layer
 
-- **Database**: [Open - not yet decided]
-- **ORM/Query Builder**: [Open - not yet decided]
-- **Migration Tool**: [Open - not yet decided]
+- **Database**: None — stateless for Phase 1, transcript in / outputs out, no persistence
+- **ORM/Query Builder**: N/A
+- **Migration Tool**: N/A
 
 ---
 
 ## Testing
 
-- **Framework**: [Open - not yet decided]
+- **Framework**: Vitest
 - **Coverage Target**: [Open - not yet decided]
 - **E2E Tool**: [Open - not yet decided]
 
@@ -49,16 +49,16 @@ ABAA (AI Business Analyst Assistant) is a web app that automates a Business Anal
 ## Code Style
 
 - **Language**: JavaScript (plain, not TypeScript)
-- **Linter**: [Open - not yet decided]
-- **Formatter**: [Open - not yet decided]
+- **Linter**: ESLint
+- **Formatter**: Prettier
 
 ---
 
 ## Deployment
 
 - **Platform**: Render
-- **CI/CD**: [Open - not yet decided]
-- **Environment Strategy**: [Open - not yet decided]
+- **CI/CD**: None yet — manual deploy via Render for Phase 1, revisit in Phase 2
+- **Environment Strategy**: Single environment (local dev + Render production), no staging tier yet
 
 ---
 
