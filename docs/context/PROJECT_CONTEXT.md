@@ -6,53 +6,69 @@
 
 ---
 
+## Product
+
+ABAA (AI Business Analyst Assistant) is a web app that automates a Business Analyst's workflow using the ACE Framework's BMAD cycle (Analyze, Discuss, Plan, Execute/Verify). It takes a client meeting transcript as input and generates three outputs: a Markdown requirements/tech-spec document, a coder-assignable task breakdown, and a Statement of Work (SOW). The app must use AI both during its own construction and as part of its runtime functionality (LLM-driven transcript analysis).
+
+---
+
 ## Visual Style
 
-- **Density**: [Compact | Comfortable | Spacious]
-- **Theme**: [Dark Mode | Light Mode | System]
-- **Component Library**: [e.g., Shadcn/UI, Material, Custom]
-- **Typography**: [e.g., Inter, System Default]
+- **Density**: [Open - not yet decided]
+- **Theme**: [Open - not yet decided]
+- **Component Library**: [Open - not yet decided]
+- **Typography**: [Open - not yet decided]
 
 ---
 
 ## API Design
 
-- **Style**: [REST | GraphQL | gRPC]
-- **Error Format**: [Problem Details RFC 7807 | Custom envelope]
-- **Auth Strategy**: [Bearer Token | Session Cookie | API Key]
-- **Versioning**: [URL path | Header | Query param]
+- **Style**: [Open - not yet decided]
+- **Error Format**: [Open - not yet decided]
+- **Auth Strategy**: [Open - not yet decided]
+- **Versioning**: [Open - not yet decided]
 
 ---
 
 ## Data Layer
 
-- **Database**: [e.g., PostgreSQL, SQLite, MongoDB]
-- **ORM/Query Builder**: [e.g., Prisma, Drizzle, raw SQL]
-- **Migration Tool**: [e.g., Prisma Migrate, Flyway, manual]
+- **Database**: [Open - not yet decided]
+- **ORM/Query Builder**: [Open - not yet decided]
+- **Migration Tool**: [Open - not yet decided]
 
 ---
 
 ## Testing
 
-- **Framework**: [e.g., Vitest, Jest, Pytest]
-- **Coverage Target**: [e.g., 80%]
-- **E2E Tool**: [e.g., Playwright, Cypress, none]
+- **Framework**: [Open - not yet decided]
+- **Coverage Target**: [Open - not yet decided]
+- **E2E Tool**: [Open - not yet decided]
 
 ---
 
 ## Code Style
 
-- **Language**: [e.g., TypeScript, Python, Go]
-- **Linter**: [e.g., ESLint, Ruff, golangci-lint]
-- **Formatter**: [e.g., Prettier, Black, gofmt]
+- **Language**: JavaScript (plain, not TypeScript)
+- **Linter**: [Open - not yet decided]
+- **Formatter**: [Open - not yet decided]
 
 ---
 
 ## Deployment
 
-- **Platform**: [e.g., Vercel, AWS, Docker, self-hosted]
-- **CI/CD**: [e.g., GitHub Actions, GitLab CI]
-- **Environment Strategy**: [e.g., dev → staging → prod]
+- **Platform**: Render
+- **CI/CD**: [Open - not yet decided]
+- **Environment Strategy**: [Open - not yet decided]
+
+---
+
+## Stack & Hosting
+
+- **Frontend**: React + Vite, plain JavaScript (not TypeScript), Tailwind CSS 3
+- **Backend**: Python
+- **LLM Provider**: OpenRouter free tier, model openrouter/poolside/laguna-xs-2.1:free
+- **Hosting**: Render — frontend static site and backend web service deployed as two separate services, no local dev process required for the deployed app
+- **Constraint**: Every tool/service used must be free (hard constraint, no paid tiers anywhere in the stack)
 
 ---
 
