@@ -2,18 +2,16 @@
 
 ## Session Metadata
 
-- **Last Updated:** 2026-08-11
+- **Last Updated:** 2026-08-12
 - **Session ID:** abaa-phase1-kickoff
 - **Active Role:** Architect
-- **Mode:** DISCUSS
+- **Mode:** PLAN
 
 ---
 
 ## Current Objective
 
-Finish trimming the ACE Framework scaffold down to what ABAA actually needs,
-then have the Architect role generate the initial PROJECT_CONTEXT document
-capturing the full five-phase roadmap before Phase 1 implementation begins.
+Generate docs/planning/implementation_plan.md for Phase 1 (paste-transcript → Requirements Spec + Task Breakdown + SOW pipeline), using the now-locked PROJECT_CONTEXT.md as binding constraints.
 
 ---
 
@@ -33,12 +31,12 @@ capturing the full five-phase roadmap before Phase 1 implementation begins.
 - Stack decisions locked: React + Vite (plain JavaScript, not TypeScript),
   Python backend, OpenRouter free tier, Aider (`py -3.12 -m aider`) as the
   execution tool, Render for Phase 2 hosting.
+- docs/context/PROJECT_CONTEXT.md fully populated and locked — all sections (Product, Visual Style, API Design, Data Layer, Testing, Code Style, Deployment, Stack & Hosting) resolved, no remaining open items.
+- Aider launch script updated to follow ACE-SPEC.md §9 session-start sequence — now reads ACE-SPEC.md and docs/rca/regression-guards.yaml, and loads ACTIVE_CONTEXT.md as editable (--file) rather than read-only.
 
 ### In Progress
 
-- Finishing `docs/` cleanup (removing ACE's own dev-history files:
-  ADR-001–003, planning walkthroughs/analyses tied to ACE's v2.5.0/v2.7.0
-  releases, ACE_FRAMEWORK_BLOG_POST.md).
+- Generating Phase 1 implementation plan.
 
 ### Blocked
 
@@ -48,12 +46,9 @@ capturing the full five-phase roadmap before Phase 1 implementation begins.
 
 ## Next Steps (human actions)
 
-1. [ ] Finish remaining `docs/` deletions.
-2. [ ] Have Aider's Architect role generate the initial PROJECT_CONTEXT.md,
-       capturing the full five-phase roadmap (not just Phase 1).
-3. [ ] Begin Phase 1 discuss: scope the paste-transcript → Requirements
-       Spec + Task Breakdown + SOW pipeline in detail.
-4. [ ] Have Architect role generate the first task breakdown for Phase 1.
+1. [ ] Generate docs/planning/implementation_plan.md for Phase 1 via the Architect role.
+2. [ ] Generate the corresponding docs/planning/task_checklist.md entries once the plan exists.
+3. [ ] Resolve whether tasks.json (machine-readable task state, referenced in earlier session prompts but not currently in the Aider read/file list) exists and needs to be created or added to the script.
 
 ---
 
@@ -79,6 +74,7 @@ Input, (4) UI/UX Pass, (5) Final Touches & Deployment.
 
 - This file previously contained ACE Framework's own v2.7.0 release session
   state (unrelated to ABAA) and has been reset for this project.
+- PROJECT_CONTEXT.md's open items (testing coverage target, E2E tool) were explicitly left undecided by design — no formal coverage target and no E2E tool for Phase 1 — so future sessions don't re-open them as oversights.
 
 ---
 
