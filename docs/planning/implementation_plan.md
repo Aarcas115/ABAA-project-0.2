@@ -3,7 +3,7 @@
 > **Status:** Draft
 > **Created:** 2026-08-12
 > **Author:** Architect
-> **PRD Reference:** docs/requirements/PRD-001-core-pipeline.md
+> **Requirements Source:** docs/context/PROJECT_CONTEXT.md and project roadmap discussion
 
 ---
 
@@ -23,28 +23,35 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
 
 ---
 
+## Testing Framework
+
+- **Frontend:** Vitest (as per PROJECT_CONTEXT.md)
+- **Backend:** pytest (added for Python backend testing)
+
+---
+
 ## Tasks
 
 <task id="1">
   <name>Backend Scaffold with OpenRouter Integration</name>
-  <objective>Backend server running with OpenRouter API integration, exposing a /api/analyze endpoint that accepts transcript text and returns structured analysis results</objective>
+  <objective>FastAPI server running on app/backend/ with OpenRouter API integration, exposing a /api/analyze endpoint that accepts transcript text and returns structured analysis results</objective>
   <files>
     <create>
-      - backend/app.py
-      - backend/requirements.txt
-      - backend/.env.example
+      - app/backend/app.py
+      - app/backend/requirements.txt
+      - app/backend/.env.example
     </create>
     <modify>
       - None (fresh scaffold)
     </modify>
   </files>
   <tests>
-    <test>Backend server starts and responds to health check</test>
-    <test>/api/analyze endpoint accepts POST with transcript and returns JSON</test>
-    <test>OpenRouter API key is read from environment variable</test>
+    <test>Backend server starts and responds to health check (pytest)</test>
+    <test>/api/analyze endpoint accepts POST with transcript and returns JSON (pytest)</test>
+    <test>OpenRouter API key is read from environment variable (pytest)</test>
   </tests>
   <acceptance_criteria>
-    <criterion>Python Flask/FastAPI server runs on localhost:5000</criterion>
+    <criterion>Python FastAPI server runs on localhost:5000</criterion>
     <criterion>POST /api/analyze with {"transcript": "text"} returns 200 with JSON response</criterion>
     <criterion>OpenRouter API calls succeed with valid API key</criterion>
     <criterion>Error handling returns simple JSON { "error": "message" } format</criterion>
@@ -58,24 +65,24 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
   <objective>React frontend with a textarea for transcript input and a submit button, connected to the backend /api/analyze endpoint</objective>
   <files>
     <create>
-      - frontend/index.html
-      - frontend/src/main.js
-      - frontend/src/App.js
-      - frontend/src/components/TranscriptForm.js
-      - frontend/vite.config.js
-      - frontend/package.json
-      - frontend/tailwind.config.js
-      - frontend/postcss.config.js
-      - frontend/index.css
+      - app/frontend/index.html
+      - app/frontend/src/main.jsx
+      - app/frontend/src/App.jsx
+      - app/frontend/src/components/TranscriptForm.jsx
+      - app/frontend/vite.config.js
+      - app/frontend/package.json
+      - app/frontend/tailwind.config.js
+      - app/frontend/postcss.config.js
+      - app/frontend/index.css
     </create>
     <modify>
       - None (fresh scaffold)
     </modify>
   </files>
   <tests>
-    <test>Frontend dev server starts and loads App component</test>
-    <test>TranscriptForm renders textarea and submit button</test>
-    <test>Form submission triggers API call to backend</test>
+    <test>Frontend dev server starts and loads App component (Vitest)</test>
+    <test>TranscriptForm renders textarea and submit button (Vitest)</test>
+    <test>Form submission triggers API call to backend (Vitest)</test>
   </tests>
   <acceptance_criteria>
     <criterion>Frontend runs on localhost:5173</criterion>
@@ -92,17 +99,17 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
   <objective>Create the prompt template and pipeline logic that transforms a raw transcript into the three required outputs: requirements spec, task breakdown, and SOW</objective>
   <files>
     <create>
-      - backend/prompts/transcript_analysis.txt
-      - backend/analysis_pipeline.py
+      - app/backend/prompts/transcript_analysis.txt
+      - app/backend/analysis_pipeline.py
     </create>
     <modify>
-      - backend/app.py (add prompt loading and pipeline integration)
+      - app/backend/app.py (add prompt loading and pipeline integration)
     </modify>
   </files>
   <tests>
-    <test>Prompt template loads correctly from file</test>
-    <test>Analysis pipeline processes transcript and returns structured output</test>
-    <test>Output contains all three required sections (requirements, tasks, SOW)</test>
+    <test>Prompt template loads correctly from file (pytest)</test>
+    <test>Analysis pipeline processes transcript and returns structured output (pytest)</test>
+    <test>Output contains all three required sections (requirements, tasks, SOW) (pytest)</test>
   </tests>
   <acceptance_criteria>
     <criterion>Transcript analysis prompt is well-formed for laguna-xs-2.1:free</criterion>
@@ -118,20 +125,20 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
   <objective>Display the three AI-generated outputs (requirements spec, task breakdown, SOW) in the frontend with proper Markdown rendering and organized layout</objective>
   <files>
     <create>
-      - frontend/src/components/RequirementsSpec.js
-      - frontend/src/components/TaskBreakdown.js
-      - frontend/src/components/StatementOfWork.js
-      - frontend/src/components/OutputDisplay.js
+      - app/frontend/src/components/RequirementsSpec.jsx
+      - app/frontend/src/components/TaskBreakdown.jsx
+      - app/frontend/src/components/StatementOfWork.jsx
+      - app/frontend/src/components/OutputDisplay.jsx
     </create>
     <modify>
-      - frontend/src/App.js (integrate output components)
-      - frontend/src/components/TranscriptForm.js (handle response display)
+      - app/frontend/src/App.jsx (integrate output components)
+      - app/frontend/src/components/TranscriptForm.jsx (handle response display)
     </modify>
   </files>
   <tests>
-    <test>OutputDisplay renders all three output sections</test>
-    <test>Markdown content is properly formatted</test>
-    <test>Each output section has appropriate heading/label</test>
+    <test>OutputDisplay renders all three output sections (Vitest)</test>
+    <test>Markdown content is properly formatted (Vitest)</test>
+    <test>Each output section has appropriate heading/label (Vitest)</test>
   </tests>
   <acceptance_criteria>
     <criterion>Three distinct output sections are visible after form submission</criterion>
@@ -144,23 +151,23 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
 </task>
 
 <task id="5">
-  <name>Local End-to-End Smoke Test</name>
-  <objective>Verify the complete pipeline works end-to-end: transcript input → backend processing → frontend display of all three outputs</objective>
+  <name>Manual Verification Checklist</name>
+  <objective>Create a documented manual verification checklist for human operators to validate the complete pipeline works end-to-end: transcript input → backend processing → frontend display of all three outputs</objective>
   <files>
     <create>
-      - tests/e2e/smoke.test.js
-      - tests/e2e/sample-transcript.txt
+      - app/docs/manual-verification.md
     </create>
     <modify>
       - None (verification only)
     </modify>
   </files>
   <tests>
-    <test>Full pipeline processes sample transcript and returns all three outputs</test>
-    <test>Each output section contains expected content markers</test>
-    <test>Error handling works for invalid transcript</test>
+    <test>Manual checklist provides clear steps for verification</test>
+    <test>Checklist includes sample transcript for testing</test>
+    <test>Checklist documents expected outputs and error scenarios</test>
   </tests>
   <acceptance_criteria>
+    <criterion>Manual verification checklist is complete and actionable</criterion>
     <criterion>Sample transcript produces all three outputs without errors</criterion>
     <criterion>Requirements spec contains business requirements section</criterion>
     <criterion>Task breakdown contains numbered task list</criterion>
@@ -177,10 +184,11 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
 
 After all tasks complete:
 
-- [ ] All unit tests pass (Vitest)
+- [ ] All unit tests pass (Vitest for frontend)
+- [ ] All backend tests pass (pytest)
 - [ ] Backend API endpoints respond correctly
 - [ ] Frontend components render properly
-- [ ] End-to-end smoke test passes
+- [ ] Manual verification checklist completed and validated
 - [ ] Code review completed
 - [ ] Documentation updated (README.md)
 - [ ] ACTIVE_CONTEXT.md updated
