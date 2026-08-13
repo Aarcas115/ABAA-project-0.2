@@ -41,8 +41,8 @@ ABAA (AI Business Analyst Assistant) is a web app that automates a Business Anal
 ## Testing
 
 - **Framework**: Vitest
-- **Coverage Target**: [Open - not yet decided]
-- **E2E Tool**: [Open - not yet decided]
+- **Coverage Target**: No formal target for Phase 1 — MVP/demo focus, test what matters (critical pipeline logic) rather than chasing a percentage
+- **E2E Tool**: None for Phase 1 — revisit once the UI is stable, likely in Phase 4 (UI/UX Polish)
 
 ---
 
