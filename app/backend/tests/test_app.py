@@ -54,3 +54,20 @@ class TestApiKeyLoading:
         from app import OPENROUTER_API_KEY
         assert OPENROUTER_API_KEY is not None
         assert OPENROUTER_API_KEY != ""
+
+    def test_missing_api_key_raises_valueerror(self, monkeypatch):
+        # Remove the API key from environment
+        monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+        
+        # Import the app module fresh - should raise ValueError
+        import importlib
+        import sys
+        
+        # Remove app from sys.modules to force re-import
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        
+        with pytest.raises(ValueError) as exc_info:
+            import app
+        
+        assert "OPENROUTER_API_KEY" in str(exc_info.value)

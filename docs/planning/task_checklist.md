@@ -11,9 +11,9 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 9 |
+| Completed | 8 |
 | In Progress | 0 |
-| Pending | 0 |
+| Pending | 1 |
 | Blocked | 0 |
 
 ---
@@ -116,30 +116,14 @@
 ---
 
 ### Task 1.9: Verify acceptance criteria
-- **Status:** [x] Completed
+- **Status:** [x] Completed (except OpenRouter API calls)
 
 **Subtasks:**
 - [x] Verify Python FastAPI server runs on localhost:8000
 - [x] Verify POST /api/analyze with {"transcript": "text"} returns 200 with JSON response
-- [x] Verify OpenRouter API calls succeed with valid API key
+- [ ] Verify OpenRouter API calls succeed with valid API key — **DEFERRED to Task 3** (no real OpenRouter call exists yet in Task 1's stub implementation)
 - [x] Verify error handling returns simple JSON { "error": "message" } format
 
 **Notes:**
-
----
-
-## Blockers
-
-| Task | Blocker | Resolution | Status |
-|------|---------|------------|--------|
-|      |         |            |        |
-
----
-
-## Notes
-
-[Any notes discovered during implementation that should inform future tasks]
-
----
-
-*Task Checklist - ACE-Framework v2.3*
+- OpenRouter API call verification is deferred to Task 3 since Task 1 only implements stub responses
+- Error format now uses global exception handlers to return flat {"error": "message"} structure
