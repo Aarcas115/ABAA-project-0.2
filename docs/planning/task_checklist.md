@@ -13,7 +13,7 @@
 |--------|-------|
 | Completed | 0 |
 | In Progress | 0 |
-| Pending | 0 |
+| Pending | 9 |
 | Blocked | 0 |
 
 ---
@@ -60,9 +60,10 @@
 **Subtasks:**
 - [ ] Create POST /api/analyze endpoint accepting JSON body with "transcript" field
 - [ ] Add request validation for transcript field
-- [ ] Return proper JSON response structure
+- [ ] Return a placeholder JSON response (e.g., {"requirements_spec": "stub", "task_breakdown": "stub", "sow": "stub"}) — real analysis output is added in Task 3, not here
 
 **Notes:**
+- This endpoint will return stub data initially; the actual LLM-powered analysis pipeline is implemented in Task 3
 
 ---
 
