@@ -51,7 +51,7 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
     <test>OpenRouter API key is read from environment variable (pytest)</test>
   </tests>
   <acceptance_criteria>
-    <criterion>Python FastAPI server runs on localhost:5000</criterion>
+    <criterion>Python FastAPI server runs on localhost:8000</criterion>
     <criterion>POST /api/analyze with {"transcript": "text"} returns 200 with JSON response</criterion>
     <criterion>OpenRouter API calls succeed with valid API key</criterion>
     <criterion>Error handling returns simple JSON { "error": "message" } format</criterion>
@@ -155,7 +155,7 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
   <objective>Create a documented manual verification checklist for human operators to validate the complete pipeline works end-to-end: transcript input → backend processing → frontend display of all three outputs</objective>
   <files>
     <create>
-      - app/docs/manual-verification.md
+      - docs/verification/manual-verification.md
     </create>
     <modify>
       - None (verification only)
