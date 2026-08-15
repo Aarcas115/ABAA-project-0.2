@@ -11,9 +11,9 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 8 |
+| Completed | 9 |
 | In Progress | 0 |
-| Pending | 1 |
+| Pending | 0 |
 | Blocked | 0 |
 
 ---
@@ -28,6 +28,7 @@
 - [x] Verify pip install works with the requirements file
 
 **Notes:**
+- Manually corrected to include pytest (was missing, discovered when py -3.12 -m pytest failed with No module named pytest)
 
 ---
 
@@ -112,6 +113,7 @@
 - [x] Verify tests pass
 
 **Notes:**
+- test_missing_api_key_raises_valueerror now genuinely implemented and passing, verified via real pytest -v output
 
 ---
 
@@ -127,3 +129,4 @@
 **Notes:**
 - OpenRouter API call verification is deferred to Task 3 since Task 1 only implements stub responses
 - Error format now uses global exception handlers to return flat {"error": "message"} structure
+- All 9 subtasks verified via actual py -3.12 -m pytest -v run — 6/6 tests passed. Task 1 complete.

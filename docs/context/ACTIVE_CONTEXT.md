@@ -29,15 +29,15 @@ Task 1 Complete: Backend Scaffold with OpenRouter Integration
 
 ### Completed
 
-- Task 1.1: Created app/backend/requirements.txt with dependencies
+- Task 1.1: Created app/backend/requirements.txt with dependencies (added pytest manually)
 - Task 1.2: Created app/backend/.env.example with OPENROUTER_API_KEY placeholder
 - Task 1.3: Scaffolded app/backend/app.py with FastAPI instance, health check, and CORS
 - Task 1.4: Implemented POST /api/analyze route with validation and stub response
 - Task 1.5: Wired up OPENROUTER_API_KEY loading with startup validation
 - Task 1.6: Created pytest tests for health check endpoint
 - Task 1.7: Created pytest tests for /api/analyze endpoint
-- Task 1.8: Created pytest tests for API key loading behavior
-- Task 1.9: Verified all acceptance criteria
+- Task 1.8: Created pytest tests for API key loading behavior (including missing key test)
+- Task 1.9: Verified all acceptance criteria (OpenRouter calls deferred to Task 3)
 
 ---
 
@@ -74,6 +74,7 @@ Task 1 Complete: Backend Scaffold with OpenRouter Integration
 - FastAPI locked as backend framework
 - Backend tests use pytest, frontend tests use Vitest
 - Need OpenRouter API key for testing
+- All 6 tests passed in actual pytest run
 
 ---
 
