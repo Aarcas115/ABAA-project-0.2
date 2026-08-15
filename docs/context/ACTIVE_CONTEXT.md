@@ -21,7 +21,7 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
 
 - Implementation plan approved and ready for execution
 - Task 1 complete and verified (see docs/planning/task_checklist.md for Task 1's completed checklist)
-- Task 2 checklist generated and ready for execution
+- Task 2 subtasks 2.1-2.8 complete and created
 
 ### In Progress
 
@@ -30,6 +30,7 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
 ### Completed
 
 - Task 1: Backend Scaffold with OpenRouter Integration (complete and verified)
+- Task 2.1-2.8: Frontend scaffold files created (package.json, vite.config.js, tailwind.config.js, postcss.config.js, index.css, index.html, main.jsx, App.jsx)
 
 ---
 
