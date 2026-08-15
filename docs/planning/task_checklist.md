@@ -1,7 +1,7 @@
-# Task Checklist: Backend Scaffold with OpenRouter Integration
+# Task Checklist: Frontend Scaffold with Transcript Input Form
 
 > **Plan Reference:** docs/planning/implementation_plan.md
-> **Task ID:** 1
+> **Task ID:** 2
 > **Last Updated:** 2026-08-12
 > **Current Role:** Developer
 
@@ -11,122 +11,230 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 9 |
+| Completed | 0 |
 | In Progress | 0 |
-| Pending | 0 |
+| Pending | 17 |
 | Blocked | 0 |
 
 ---
 
 ## Tasks
 
-### Task 1.1: Create app/backend/requirements.txt
-- **Status:** [x] Completed
+### Task 2.1: Create app/frontend/package.json
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create app/backend/requirements.txt with fastapi, uvicorn, python-dotenv, httpx dependencies
-- [x] Verify pip install works with the requirements file
-
-**Notes:**
-- Manually corrected to include pytest (was missing, discovered when py -3.12 -m pytest failed with No module named pytest)
-
----
-
-### Task 1.2: Create app/backend/.env.example
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create app/backend/.env.example with OPENROUTER_API_KEY placeholder
-- [x] Add .env to .gitignore (if not already there)
+- [ ] Create app/frontend/package.json with React, Vite, Vitest, Tailwind CSS 3, and necessary dev dependencies
+- [ ] Configure test script for Vitest
+- [ ] Configure build script for Vite
+- [ ] Verify npm install works with the package.json
 
 **Notes:**
 
 ---
 
-### Task 1.3: Scaffold app/backend/app.py with FastAPI instance
-- **Status:** [x] Completed
+### Task 2.2: Create app/frontend/vite.config.js
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create app/backend/app.py with FastAPI app instance
-- [x] Add root endpoint for health check
-- [x] Configure CORS for frontend communication
+- [ ] Create vite.config.js with React plugin and proper server port (5173)
+- [ ] Configure test environment for Vitest
+- [ ] Verify vite.config.js loads without errors
 
 **Notes:**
 
 ---
 
-### Task 1.4: Implement /api/analyze route
-- **Status:** [x] Completed
+### Task 2.3: Create app/frontend/tailwind.config.js
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create POST /api/analyze endpoint accepting JSON body with "transcript" field
-- [x] Add request validation for transcript field
-- [x] Return a placeholder JSON response (e.g., {"requirements_spec": "stub", "task_breakdown": "stub", "sow": "stub"}) — real analysis output is added in Task 3, not here
-
-**Notes:**
-- This endpoint will return stub data initially; the actual LLM-powered analysis pipeline is implemented in Task 3
-
----
-
-### Task 1.5: Wire up environment variable loading for OpenRouter key
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Load OPENROUTER_API_KEY from environment using python-dotenv
-- [x] Add validation to ensure API key is present at startup
-- [x] Store API key in a way that can be accessed by the analysis pipeline
+- [ ] Create tailwind.config.js with dark mode enabled (class strategy)
+- [ ] Configure content paths for index.html and src/**/*.{js,jsx}
+- [ ] Configure system font stack (no custom fonts)
+- [ ] Verify tailwind.config.js is valid
 
 **Notes:**
 
 ---
 
-### Task 1.6: Write pytest test for backend server health check
-- **Status:** [x] Completed
+### Task 2.4: Create app/frontend/postcss.config.js
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create tests in app/backend/tests/test_app.py
-- [x] Write test that starts the FastAPI test client and checks health endpoint
-- [x] Verify test passes
+- [ ] Create postcss.config.js with Tailwind CSS and autoprefixer plugins
+- [ ] Verify postcss.config.js is valid
 
 **Notes:**
 
 ---
 
-### Task 1.7: Write pytest test for /api/analyze endpoint
-- **Status:** [x] Completed
+### Task 2.5: Create app/frontend/index.css
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Write test that POSTs to /api/analyze with valid transcript
-- [x] Verify response is 200 with JSON structure
-- [x] Verify test passes
+- [ ] Create index.css with Tailwind base directives and system font stack
+- [ ] Add base styles for dark mode
+- [ ] Verify CSS file is valid
 
 **Notes:**
 
 ---
 
-### Task 1.8: Write pytest test for OpenRouter API key loading
-- **Status:** [x] Completed
+### Task 2.6: Create app/frontend/index.html
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Write test that verifies OPENROUTER_API_KEY is loaded from environment
-- [x] Write test that handles missing API key gracefully
-- [x] Verify tests pass
+- [ ] Create index.html with root div for React mount
+- [ ] Link index.css and set up proper viewport meta tags
+- [ ] Verify index.html is valid HTML5
 
 **Notes:**
-- test_missing_api_key_raises_valueerror now genuinely implemented and passing, verified via real pytest -v output
 
 ---
 
-### Task 1.9: Verify acceptance criteria
-- **Status:** [x] Completed (except OpenRouter API calls)
+### Task 2.7: Create app/frontend/src/main.jsx
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Verify Python FastAPI server runs on localhost:8000
-- [x] Verify POST /api/analyze with {"transcript": "text"} returns 200 with JSON response
-- [ ] Verify OpenRouter API calls succeed with valid API key — **DEFERRED to Task 3** (no real OpenRouter call exists yet in Task 1's stub implementation)
-- [x] Verify error handling returns simple JSON { "error": "message" } format
+- [ ] Create main.jsx with React 18 createRoot
+- [ ] Import and apply Tailwind CSS
+- [ ] Render App component to root div
+- [ ] Verify main.jsx loads without errors
 
 **Notes:**
-- OpenRouter API call verification is deferred to Task 3 since Task 1 only implements stub responses
-- Error format now uses global exception handlers to return flat {"error": "message"} structure
-- All 9 subtasks verified via actual py -3.12 -m pytest -v run — 6/6 tests passed. Task 1 complete.
+
+---
+
+### Task 2.8: Create app/frontend/src/App.jsx
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Create App.jsx with dark mode styling (dark class on html)
+- [ ] Use compact density layout
+- [ ] Use system font stack (no custom web fonts)
+- [ ] No component library (plain Tailwind utility classes only)
+- [ ] Placeholder for TranscriptForm and output display
+- [ ] Verify App.jsx renders without errors
+
+**Notes:**
+
+---
+
+### Task 2.9: Create app/frontend/src/components/TranscriptForm.jsx
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Create TranscriptForm.jsx with textarea for multiline transcript input
+- [ ] Add submit button that triggers POST to /api/analyze
+- [ ] Implement loading state during API call
+- [ ] Implement error state handling
+- [ ] Verify TranscriptForm.jsx renders correctly
+
+**Notes:**
+
+---
+
+### Task 2.10: Write Vitest test for frontend dev server startup
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Create test file for frontend server startup
+- [ ] Write test that verifies dev server starts and loads App component
+- [ ] Verify test passes
+
+**Notes:**
+
+---
+
+### Task 2.11: Write Vitest test for TranscriptForm component
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Write test that TranscriptForm renders textarea and submit button
+- [ ] Verify test passes
+
+**Notes:**
+
+---
+
+### Task 2.12: Write Vitest test for form submission API call
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Write test that form submission triggers POST to /api/analyze
+- [ ] Verify test passes
+
+**Notes:**
+
+---
+
+### Task 2.13: Verify frontend runs on localhost:5173
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Start Vite dev server
+- [ ] Verify frontend loads on localhost:5173
+- [ ] Verify dark mode styling is applied
+
+**Notes:**
+
+---
+
+### Task 2.14: Verify TranscriptForm accepts multiline text input
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Test textarea accepts multiline input
+- [ ] Verify textarea has proper styling
+
+**Notes:**
+
+---
+
+### Task 2.15: Verify submit button triggers POST to /api/analyze
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Test form submission triggers correct API call
+- [ ] Verify loading state appears during API call
+
+**Notes:**
+
+---
+
+### Task 2.16: Verify form shows loading state during API call
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Test loading indicator appears when form is submitted
+- [ ] Verify loading state clears after response
+
+**Notes:**
+
+---
+
+### Task 2.17: Run all Vitest tests
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Run npm test (Vitest)
+- [ ] Verify all tests pass
+- [ ] Document test results
+
+**Notes:**
+
+---
+
+## Blockers
+
+None
+
+---
+
+## Notes
+
+- All frontend code uses plain JavaScript (not TypeScript) per PROJECT_CONTEXT.md
+- Dark mode is default, compact density, system font stack, no component library
+- Vitest is the testing framework per PROJECT_CONTEXT.md
+- No E2E tooling for Phase 1
