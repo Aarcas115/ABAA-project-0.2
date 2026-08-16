@@ -1,9 +1,10 @@
 import React from 'react'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { vi } from 'vitest'
 import TranscriptForm from './TranscriptForm'
 
 // Mock fetch globally
-global.fetch = jest.fn()
+global.fetch = vi.fn()
 
 describe('TranscriptForm', () => {
   beforeEach(() => {
@@ -11,7 +12,7 @@ describe('TranscriptForm', () => {
   })
 
   afterEach(() => {
-    jest.clearAllMocks()
+    vi.clearAllMocks()
   })
 
   test('renders textarea and submit button', () => {
