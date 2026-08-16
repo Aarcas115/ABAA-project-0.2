@@ -14,7 +14,7 @@
 |--------|-------|
 | Completed | 0 |
 | In Progress | 0 |
-| Pending | 17 |
+| Pending | 16 |
 | Blocked | 0 |
 
 ---
@@ -165,19 +165,7 @@
 
 ---
 
-### Task 3.11: Update requirements.txt with httpx dependency
-- **Status:** [ ] Pending
-
-**Subtasks:**
-- [ ] Add httpx to requirements.txt for async HTTP calls
-- [ ] Verify dependency is compatible with Python 3.12
-- [ ] Verify requirements.txt is valid
-
-**Notes:**
-
----
-
-### Task 3.12: Write integration test for full pipeline
+### Task 3.11: Write integration test for full pipeline
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -190,7 +178,7 @@
 
 ---
 
-### Task 3.13: Verify all acceptance criteria
+### Task 3.12: Verify all acceptance criteria
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -204,7 +192,7 @@
 
 ---
 
-### Task 3.14: Run all pytest tests
+### Task 3.13: Run all pytest tests
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -216,7 +204,7 @@
 
 ---
 
-### Task 3.15: Update .env.example with OpenRouter configuration
+### Task 3.14: Update .env.example with OpenRouter configuration
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -229,7 +217,7 @@
 
 ---
 
-### Task 3.16: Add environment variable support for configuration
+### Task 3.15: Add environment variable support for configuration
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -241,7 +229,7 @@
 
 ---
 
-### Task 3.17: Document API key setup instructions
+### Task 3.16: Document API key setup instructions
 - **Status:** [ ] Pending
 
 **Subtasks:**
@@ -265,5 +253,4 @@ None
 - Must use openrouter/poolside/laguna-xs-2.1:free model (free tier)
 - Tests should mock OpenRouter responses, not make real API calls
 - Error handling must return simple JSON { "error": "message" } format per PROJECT_CONTEXT.md
-- All code uses plain JavaScript (not TypeScript) per PROJECT_CONTEXT.md
-- Vitest for frontend testing, pytest for backend testing per PROJECT_CONTEXT.md
+- All code uses Python 3.12 per PROJECT_CONTEXT.md, matching Task 1's backend conventions.
