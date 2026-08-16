@@ -27,7 +27,7 @@
 - [x] Create app/frontend/package.json with React, Vite, Vitest, Tailwind CSS 3, and necessary dev dependencies
 - [x] Configure test script for Vitest
 - [x] Configure build script for Vite
-- [ ] Verify npm install works with the package.json
+- [x] Verify npm install works with the package.json
 
 **Notes:**
 
@@ -39,7 +39,7 @@
 **Subtasks:**
 - [x] Create vite.config.js with React plugin and proper server port (5173)
 - [x] Configure test environment for Vitest
-- [ ] Verify vite.config.js loads without errors
+- [x] Verify vite.config.js loads without errors
 
 **Notes:**
 
@@ -52,7 +52,7 @@
 - [x] Create tailwind.config.js with dark mode enabled (class strategy)
 - [x] Configure content paths for index.html and src/**/*.{js,jsx}
 - [x] Configure system font stack (no custom fonts)
-- [ ] Verify tailwind.config.js is valid
+- [x] Verify tailwind.config.js is valid
 
 **Notes:**
 
@@ -63,7 +63,7 @@
 
 **Subtasks:**
 - [x] Create postcss.config.js with Tailwind CSS and autoprefixer plugins
-- [ ] Verify postcss.config.js is valid
+- [x] Verify postcss.config.js is valid
 
 **Notes:**
 
@@ -75,7 +75,7 @@
 **Subtasks:**
 - [x] Create index.css with Tailwind base directives and system font stack
 - [x] Add base styles for dark mode
-- [ ] Verify CSS file is valid
+- [x] Verify CSS file is valid
 
 **Notes:**
 
@@ -87,7 +87,7 @@
 **Subtasks:**
 - [x] Create index.html with root div for React mount
 - [x] Link index.css and set up proper viewport meta tags
-- [ ] Verify index.html is valid HTML5
+- [x] Verify index.html is valid HTML5
 
 **Notes:**
 
@@ -100,7 +100,7 @@
 - [x] Create main.jsx with React 18 createRoot
 - [x] Import and apply Tailwind CSS
 - [x] Render App component to root div
-- [ ] Verify main.jsx loads without errors
+- [x] Verify main.jsx loads without errors
 
 **Notes:**
 
@@ -115,7 +115,7 @@
 - [x] Use system font stack (no custom web fonts)
 - [x] No component library (plain Tailwind utility classes only)
 - [x] Placeholder for TranscriptForm and output display
-- [ ] Verify App.jsx renders without errors
+- [x] Verify App.jsx renders without errors
 
 **Notes:**
 
@@ -238,3 +238,4 @@ None
 - Dark mode is default, compact density, system font stack, no component library
 - Vitest is the testing framework per PROJECT_CONTEXT.md
 - No E2E tooling for Phase 1
+- src/index.css was initially written to app/frontend/index.css (wrong location) by the Dev session — main.jsx's relative import './index.css' expects it inside src/. Fixed by moving the file manually. Verify file placement, not just file existence, in future sessions.
