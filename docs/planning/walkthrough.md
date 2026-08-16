@@ -216,7 +216,7 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
 - **Expected:** Textarea and button present in DOM
 - **Actual:** Verified via test: "renders textarea and submit button"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestHealthCheck::test_health_check_returns_200 PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"renders textarea and submit button" PASSED
 
 #### Test Case 2: Multiline Input
 - **Requirement:** TranscriptForm accepts multiline text input
@@ -226,7 +226,7 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
 - **Expected:** Textarea accepts and displays multiline input
 - **Actual:** Verified via test: "textarea accepts multiline input"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestAnalyzeEndpoint::test_analyze_returns_200_with_valid_transcript PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"textarea accepts multiline input" PASSED
 
 #### Test Case 3: Submit Button Behavior
 - **Requirement:** Submit button triggers POST to /api/analyze
@@ -235,9 +235,9 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
   2. Click submit button
   3. Verify fetch call to correct endpoint
 - **Expected:** POST request to http://localhost:8000/api/analyze
-- **Actual:** Verified via test: "makes POST request to correct endpoint"
+- **Actual:** Verified via test: "makes POST request to correct endpoint with transcript data"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestAnalyzeEndpoint::test_analyze_returns_400_for_empty_transcript PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"makes POST request to correct endpoint with transcript data" PASSED
 
 #### Test Case 4: Loading State
 - **Requirement:** Form shows loading state during API call
@@ -247,7 +247,7 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
 - **Expected:** Button shows "Analyzing..." and textarea disabled
 - **Actual:** Verified via test: "displays loading state during API call"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestAnalyzeEndpoint::test_analyze_returns_400_for_empty_transcript PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"displays loading state during API call" PASSED
 
 #### Test Case 5: Error Handling
 - **Requirement:** Displays error message from backend
@@ -257,7 +257,7 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
 - **Expected:** Error message rendered in UI
 - **Actual:** Verified via test: "displays error message from backend"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestAnalyzeEndpoint::test_analyze_returns_400_for_empty_transcript PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"displays error message from backend" PASSED
 
 #### Test Case 6: Success State
 - **Requirement:** Displays result after successful API call
@@ -267,7 +267,7 @@ Formal verification pass on Task 2 (Frontend Scaffold with Transcript Input Form
 - **Expected:** "Analysis complete!" message and JSON output displayed
 - **Actual:** Verified via test: "displays result after successful API call"
 - **Status:** PASS
-- **Evidence:** tests/test_app.jsx::TestAnalyzeEndpoint::test_analyze_returns_400_for_empty_transcript PASSED
+- **Evidence:** src/components/TranscriptForm.test.jsx::TranscriptForm::"displays result after successful API call" PASSED
 
 ---
 
