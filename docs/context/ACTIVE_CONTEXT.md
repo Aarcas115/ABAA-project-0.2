@@ -36,6 +36,7 @@ Execute Task 3: LLM Pipeline Integration
   - End-to-end manual verification completed
   - QA-approved — walkthrough.md shows APPROVED, 9/9 Vitest tests genuinely verified, real end-to-end browser test confirmed against live backend
 - Task 3.1: Create LLM prompt template (complete)
+  - Prompt revised to reference PRD/TECH_SPEC/SOW templates instead of generic instructions
 
 ---
 

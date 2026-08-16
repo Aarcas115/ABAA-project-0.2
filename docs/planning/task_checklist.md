@@ -32,6 +32,7 @@
 - [x] Verify prompt file is valid and readable
 
 **Notes:**
+- Prompt was revised to reference PRD-template.md, TECH_SPEC-template.md, and SOW-template.md structures instead of generic bullet-point instructions
 
 ---
 

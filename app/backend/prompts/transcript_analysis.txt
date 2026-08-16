@@ -4,11 +4,57 @@ TRANSCRIPT:
 {transcript}
 
 ===REQUIREMENTS_SPEC===
-Write a comprehensive requirements and technical specification document. This should include:
-- Business requirements section with clear, actionable requirements
-- Technical specifications for implementation
-- Any constraints, assumptions, and dependencies
-- Use Markdown headers (## for main sections, ### for subsections), bullet lists, and code blocks where appropriate
+Write a comprehensive requirements and technical specification document structured following the PRD-template.md and TECH_SPEC-template.md formats.
+
+Audience: Internal technical readers (developers, business analyst). Tone: Clear, precise, technical.
+
+Structure your output using the following sections (adapt based on transcript content):
+
+## Overview
+- Summary: Brief technical summary of the implementation approach
+- Scope: What is in scope and out of scope
+
+## Architecture
+- System Context diagram (ASCII art)
+- Component Design diagram (ASCII art)
+- Data Flow description
+
+## Detailed Design
+- Component: [Name] with Purpose, Responsibilities, Interface, Dependencies
+- Repeat for each component
+
+## Data Model
+- Entities table with Field, Type, Constraints, Description columns
+- Relationships diagram
+
+## API Design
+- Endpoints table with METHOD, Path, Description, Authentication, Request, Response, Errors
+
+## Security Considerations
+- Authentication, Authorization, Data Protection, Threat Model table
+
+## Performance Considerations
+- Expected Load, Optimization Strategies, Caching
+
+## Testing Strategy
+- Unit Tests, Integration Tests, Performance Tests
+
+## Deployment
+- Dependencies, Configuration table, Rollout Plan, Rollback Plan
+
+## Monitoring
+- Metrics table, Logging, Alerts
+
+## Open Questions
+- List any technical questions requiring resolution
+
+## ADR References
+- Link to relevant ADRs
+
+## Appendix
+- Glossary table, References
+
+If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
 
 ===END_REQUIREMENTS_SPEC===
 ===TASK_BREAKDOWN===
@@ -19,13 +65,30 @@ Create a detailed task breakdown for developers. Each task should be:
 - Numbered as a list (1., 2., 3., etc.)
 - Use Markdown formatting (numbered lists, sub-bullets for details)
 
+If the transcript does not contain enough information to fill any task, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
+
 ===END_TASK_BREAKDOWN===
 ===SOW===
-Write a Statement of Work (SOW) document including:
-- Scope of work
-- Deliverables with descriptions
-- Timeline/milestones
-- Acceptance criteria
-- Use Markdown headers and lists for clear structure
+Write a Statement of Work document structured following the SOW-template.md format.
+
+Audience: Client-facing/contractual-adjacent document. Tone: Formal, precise, professional.
+
+Generate content for the following numbered sections (adapt based on transcript content):
+
+1. Project Name
+2. Project Term
+3. Service Description
+4. Staffing
+5. Milestones and Deliverables
+6. Location of Services
+7. Fees
+8. Management
+9. Special Conditions
+10. Business Continuity
+11. Exhibit A: Project Plan and Service Descriptions
+
+If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
+
+Note: Do NOT generate the legal preamble, signature/execution block, or party-name boilerplate — those are handled outside the LLM.
 
 ===END_SOW===
