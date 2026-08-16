@@ -11,9 +11,9 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 8 |
+| Completed | 12 |
 | In Progress | 0 |
-| Pending | 9 |
+| Pending | 5 |
 | Blocked | 0 |
 
 ---
@@ -122,16 +122,17 @@
 ---
 
 ### Task 2.9: Create app/frontend/src/components/TranscriptForm.jsx
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Create TranscriptForm.jsx with textarea for multiline transcript input
-- [ ] Add submit button that triggers POST to /api/analyze
-- [ ] Implement loading state during API call
-- [ ] Implement error state handling
-- [ ] Verify TranscriptForm.jsx renders correctly
+- [x] Create TranscriptForm.jsx with textarea for multiline transcript input
+- [x] Add submit button that triggers POST to /api/analyze
+- [x] Implement loading state during API call
+- [x] Implement error state handling
+- [x] Verify TranscriptForm.jsx renders correctly
 
 **Notes:**
+Initial implementation had disabled={isLoading || !transcript.trim()} on the submit button, which made the empty-transcript validation message unreachable (disabled buttons don't fire click handlers). Fixed to disabled={isLoading} so validation feedback displays. Corresponding test 'submit button is disabled when transcript is empty' was updated to 'submit button remains enabled when transcript is empty (validation happens on submit)' to match the corrected, intentional UX.
 
 ---
 
@@ -148,22 +149,22 @@
 ---
 
 ### Task 2.11: Write Vitest test for TranscriptForm component
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Write test that TranscriptForm renders textarea and submit button
-- [ ] Verify test passes
+- [x] Write test that TranscriptForm renders textarea and submit button
+- [x] Verify test passes
 
 **Notes:**
 
 ---
 
 ### Task 2.12: Write Vitest test for form submission API call
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Write test that form submission triggers POST to /api/analyze
-- [ ] Verify test passes
+- [x] Write test that form submission triggers POST to /api/analyze
+- [x] Verify test passes
 
 **Notes:**
 
@@ -239,3 +240,12 @@ None
 - Vitest is the testing framework per PROJECT_CONTEXT.md
 - No E2E tooling for Phase 1
 - src/index.css was initially written to app/frontend/index.css (wrong location) by the Dev session — main.jsx's relative import './index.css' expects it inside src/. Fixed by moving the file manually. Verify file placement, not just file existence, in future sessions.
+- Added missing testing dependencies: @testing-library/react, @testing-library/jest-dom, jsdom (via @testing-library/react)
+- Created setupTests.js to configure jest-dom for tests
+- Updated package.json with new devDependencies
+- Integrated TranscriptForm into App.jsx
+- Created comprehensive test suite for TranscriptForm covering all required scenarios
+- Moved index.css to src/ directory for proper import resolution
+- Fixed submit button disabled prop to allow empty transcript validation to work
+- Updated corresponding test to match corrected behavior
+- All 9 tests pass with real output
