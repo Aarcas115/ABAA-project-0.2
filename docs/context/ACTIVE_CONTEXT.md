@@ -38,15 +38,24 @@ Execute Task 3: LLM Pipeline Integration
 - Task 3.1: Create LLM prompt template (complete)
   - Prompt revised to reference PRD/TECH_SPEC/SOW templates instead of generic instructions
   - Prompt revised a second time to fix Requirements table (FR-XXX/NFR-XXX), SOW table structures, and task breakdown format with component-tag IDs and acceptance criteria
+- Task 3.2: Create analysis_pipeline.py (complete)
+  - Module created with load_prompt(), call_openrouter(), parse_response(), analyze_transcript()
+  - Environment variable support for OPENROUTER_MODEL and OPENROUTER_TIMEOUT added
+  - Timeout handling implemented
+  - Module imports cleanly with no syntax errors
+- Task 3.7: OpenRouter API configuration (complete)
+  - Endpoint, model, headers, request body, and timeout configuration implemented
+- Task 3.9: Response parsing (complete)
+  - All three sections extracted using exact delimiters
+  - Graceful handling of missing/malformed sections
 
 ---
 
 ## Next Steps
 
-1. Begin Task 3.2: Create analysis_pipeline.py with OpenRouter integration
-2. Modify app.py to use real pipeline instead of stub
-3. Write pytest tests for new pipeline logic
-4. Verify all acceptance criteria met
+1. Begin Task 3.3: Modify app.py to use real pipeline instead of stub
+2. Write pytest tests for new pipeline logic
+3. Verify all acceptance criteria met
 
 ---
 
@@ -80,6 +89,9 @@ Execute Task 3: LLM Pipeline Integration
 - All 9 Vitest tests from Task 2 passed
 - Verification completed: real end-to-end browser test confirmed against live backend
 - Task 3.1 completed: Created app/backend/prompts/transcript_analysis.txt with well-formed prompt
+- analysis_pipeline.py created with all four required functions
+- requirements.txt updated to include `requests` library
+- Retry logic and detailed HTTP error handling deferred to next session
 
 ---
 
