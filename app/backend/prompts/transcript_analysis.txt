@@ -1,0 +1,31 @@
+You are an AI Business Analyst Assistant. Analyze the following client meeting transcript and produce three distinct outputs in valid Markdown format.
+
+TRANSCRIPT:
+{transcript}
+
+===REQUIREMENTS_SPEC===
+Write a comprehensive requirements and technical specification document. This should include:
+- Business requirements section with clear, actionable requirements
+- Technical specifications for implementation
+- Any constraints, assumptions, and dependencies
+- Use Markdown headers (## for main sections, ### for subsections), bullet lists, and code blocks where appropriate
+
+===END_REQUIREMENTS_SPEC===
+===TASK_BREAKDOWN===
+Create a detailed task breakdown for developers. Each task should be:
+- Clearly defined and actionable
+- Assignable to a specific developer
+- Include any relevant technical details or dependencies
+- Numbered as a list (1., 2., 3., etc.)
+- Use Markdown formatting (numbered lists, sub-bullets for details)
+
+===END_TASK_BREAKDOWN===
+===SOW===
+Write a Statement of Work (SOW) document including:
+- Scope of work
+- Deliverables with descriptions
+- Timeline/milestones
+- Acceptance criteria
+- Use Markdown headers and lists for clear structure
+
+===END_SOW===

@@ -35,17 +35,16 @@ Execute Task 3: LLM Pipeline Integration
   - All 9 Vitest tests pass
   - End-to-end manual verification completed
   - QA-approved — walkthrough.md shows APPROVED, 9/9 Vitest tests genuinely verified, real end-to-end browser test confirmed against live backend
+- Task 3.1: Create LLM prompt template (complete)
 
 ---
 
 ## Next Steps
 
-1. Begin Task 3: LLM Pipeline Integration in fresh Developer session
-2. Create prompts/transcript_analysis.txt with well-formed prompt
-3. Create analysis_pipeline.py with OpenRouter integration
-4. Modify app.py to use real pipeline instead of stub
-5. Write pytest tests for new pipeline logic
-6. Verify all acceptance criteria met
+1. Begin Task 3.2: Create analysis_pipeline.py with OpenRouter integration
+2. Modify app.py to use real pipeline instead of stub
+3. Write pytest tests for new pipeline logic
+4. Verify all acceptance criteria met
 
 ---
 
@@ -78,6 +77,7 @@ Execute Task 3: LLM Pipeline Integration
 - All 6 tests from Task 1 passed in actual pytest run
 - All 9 Vitest tests from Task 2 passed
 - Verification completed: real end-to-end browser test confirmed against live backend
+- Task 3.1 completed: Created app/backend/prompts/transcript_analysis.txt with well-formed prompt
 
 ---
 
