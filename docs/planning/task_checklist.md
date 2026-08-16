@@ -12,9 +12,9 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 2 |
+| Completed | 11 |
 | In Progress | 0 |
-| Pending | 15 |
+| Pending | 5 |
 | Blocked | 0 |
 
 ---
@@ -149,7 +149,7 @@
 - [x] Parse LLM response to extract task_breakdown section
 - [x] Parse LLM response to extract sow section
 - [x] Handle malformed or missing sections gracefully
-- [x] Validate each section is valid Markdown
+- [ ] Validate each section is valid Markdown
 
 **Notes:**
 
@@ -261,3 +261,6 @@ None
 - Retry logic and detailed HTTP error handling deferred to next session
 - analysis_pipeline.py created with all four required functions
 - requirements.txt updated to include `requests` library
+- parse_response() bug fixed: content is now stored unconditionally once delimiters are found
+- Progress Summary table corrected to reflect actual completed/pending counts
+- Task 3.9's Markdown validation checkbox unchecked (only light sanity check implemented)

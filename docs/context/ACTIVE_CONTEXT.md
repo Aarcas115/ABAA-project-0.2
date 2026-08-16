@@ -92,6 +92,9 @@ Execute Task 3: LLM Pipeline Integration
 - analysis_pipeline.py created with all four required functions
 - requirements.txt updated to include `requests` library
 - Retry logic and detailed HTTP error handling deferred to next session
+- **CORRECTION 1:** Fixed parse_response() bug - content is now stored unconditionally once delimiters are found (removed incorrect "#" gating)
+- **CORRECTION 2:** Updated Progress Summary table to show 11 completed, 5 pending (was stale)
+- **CORRECTION 3:** Unchecked Task 3.9's "Validate each section is valid Markdown" box (only light sanity check implemented)
 
 ---
 

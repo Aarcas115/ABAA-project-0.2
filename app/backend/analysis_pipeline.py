@@ -99,8 +99,7 @@ def parse_response(raw_text: str) -> dict:
         end_idx = raw_text.find(req_end)
         if start_idx < end_idx:
             content = raw_text[start_idx:end_idx].strip()
-            if content and "#" in content:
-                result["requirements_spec"] = content
+            result["requirements_spec"] = content
     
     # Extract task_breakdown
     task_start = "===TASK_BREAKDOWN==="
@@ -110,8 +109,7 @@ def parse_response(raw_text: str) -> dict:
         end_idx = raw_text.find(task_end)
         if start_idx < end_idx:
             content = raw_text[start_idx:end_idx].strip()
-            if content and "#" in content:
-                result["task_breakdown"] = content
+            result["task_breakdown"] = content
     
     # Extract sow
     sow_start = "===SOW==="
@@ -121,8 +119,7 @@ def parse_response(raw_text: str) -> dict:
         end_idx = raw_text.find(sow_end)
         if start_idx < end_idx:
             content = raw_text[start_idx:end_idx].strip()
-            if content and "#" in content:
-                result["sow"] = content
+            result["sow"] = content
     
     return result
 
