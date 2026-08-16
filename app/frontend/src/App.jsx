@@ -1,4 +1,5 @@
 import React from 'react'
+import TranscriptForm from './components/TranscriptForm'
 
 function App() {
   return (
@@ -13,9 +14,7 @@ function App() {
         <section className="mb-6">
           <h2 className="text-lg font-medium mb-4 text-gray-200">Transcript Input</h2>
           <div className="border-2 border-gray-700 rounded-lg p-4 bg-gray-800/50">
-            <p className="text-gray-400">
-              [TranscriptForm component will be added here in the next session]
-            </p>
+            <TranscriptForm />
           </div>
         </section>
 
