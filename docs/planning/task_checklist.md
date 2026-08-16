@@ -11,9 +11,9 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 12 |
+| Completed | 17 |
 | In Progress | 0 |
-| Pending | 5 |
+| Pending | 0 |
 | Blocked | 0 |
 
 ---
@@ -137,12 +137,12 @@ Initial implementation had disabled={isLoading || !transcript.trim()} on the sub
 ---
 
 ### Task 2.10: Write Vitest test for frontend dev server startup
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Create test file for frontend server startup
-- [ ] Write test that verifies dev server starts and loads App component
-- [ ] Verify test passes
+- [x] Create test file for frontend server startup
+- [x] Write test that verifies dev server starts and loads App component
+- [x] Verify test passes
 
 **Notes:**
 
@@ -171,57 +171,57 @@ Initial implementation had disabled={isLoading || !transcript.trim()} on the sub
 ---
 
 ### Task 2.13: Verify frontend runs on localhost:5173
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Start Vite dev server
-- [ ] Verify frontend loads on localhost:5173
-- [ ] Verify dark mode styling is applied
+- [x] Start Vite dev server
+- [x] Verify frontend loads on localhost:5173
+- [x] Verify dark mode styling is applied
 
 **Notes:**
 
 ---
 
 ### Task 2.14: Verify TranscriptForm accepts multiline text input
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Test textarea accepts multiline input
-- [ ] Verify textarea has proper styling
+- [x] Test textarea accepts multiline input
+- [x] Verify textarea has proper styling
 
 **Notes:**
 
 ---
 
 ### Task 2.15: Verify submit button triggers POST to /api/analyze
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Test form submission triggers correct API call
-- [ ] Verify loading state appears during API call
+- [x] Test form submission triggers correct API call
+- [x] Verify loading state appears during API call
 
 **Notes:**
 
 ---
 
 ### Task 2.16: Verify form shows loading state during API call
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Test loading indicator appears when form is submitted
-- [ ] Verify loading state clears after response
+- [x] Test loading indicator appears when form is submitted
+- [x] Verify loading state clears after response
 
 **Notes:**
 
 ---
 
 ### Task 2.17: Run all Vitest tests
-- **Status:** [ ] Pending
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Run npm test (Vitest)
-- [ ] Verify all tests pass
-- [ ] Document test results
+- [x] Run npm test (Vitest)
+- [x] Verify all tests pass
+- [x] Document test results
 
 **Notes:**
 
@@ -249,3 +249,4 @@ None
 - Fixed submit button disabled prop to allow empty transcript validation to work
 - Updated corresponding test to match corrected behavior
 - All 9 tests pass with real output
+- 2.15/2.16 verified via real end-to-end manual test — actual browser at localhost:5173, actual transcript typed and submitted, actual POST to running FastAPI backend at localhost:8000, actual stub JSON response rendered correctly in the Analysis Complete panel. Not just mocked-fetch unit tests.
