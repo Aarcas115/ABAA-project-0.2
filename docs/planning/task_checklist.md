@@ -1,9 +1,10 @@
-# Task Checklist: Frontend Scaffold with Transcript Input Form
+# Task Checklist: Task 3 - LLM Prompt Engineering for Transcript Analysis
 
 > **Plan Reference:** docs/planning/implementation_plan.md
-> **Task ID:** 2
+> **Task ID:** 3
 > **Last Updated:** 2026-08-12
 > **Current Role:** Developer
+> **Mode:** EXECUTION
 
 ---
 
@@ -11,217 +12,242 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 17 |
+| Completed | 0 |
 | In Progress | 0 |
-| Pending | 0 |
+| Pending | 17 |
 | Blocked | 0 |
 
 ---
 
 ## Tasks
 
-### Task 2.1: Create app/frontend/package.json
-- **Status:** [x] Completed
+### Task 3.1: Create app/backend/prompts/transcript_analysis.txt
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create app/frontend/package.json with React, Vite, Vitest, Tailwind CSS 3, and necessary dev dependencies
-- [x] Configure test script for Vitest
-- [x] Configure build script for Vite
-- [x] Verify npm install works with the package.json
+- [ ] Create prompts directory under app/backend/
+- [ ] Create transcript_analysis.txt with well-formed prompt for laguna-xs-2.1:free
+- [ ] Include clear section delimiters for requirements_spec, task_breakdown, and sow
+- [ ] Add instructions for Markdown formatting in each section
+- [ ] Verify prompt file is valid and readable
 
 **Notes:**
 
 ---
 
-### Task 2.2: Create app/frontend/vite.config.js
-- **Status:** [x] Completed
+### Task 3.2: Create app/backend/analysis_pipeline.py
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create vite.config.js with React plugin and proper server port (5173)
-- [x] Configure test environment for Vitest
-- [x] Verify vite.config.js loads without errors
+- [ ] Create analysis_pipeline.py module
+- [ ] Implement load_prompt() function to read transcript_analysis.txt
+- [ ] Implement call_openrouter() function with proper API integration
+- [ ] Implement parse_response() function to extract three sections from LLM output
+- [ ] Implement analyze_transcript() main pipeline function
+- [ ] Add timeout handling for API calls
+- [ ] Add retry logic with exponential backoff
+- [ ] Verify analysis_pipeline.py imports and functions correctly
 
 **Notes:**
 
 ---
 
-### Task 2.3: Create app/frontend/tailwind.config.js
-- **Status:** [x] Completed
+### Task 3.3: Modify app/backend/app.py to integrate pipeline
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create tailwind.config.js with dark mode enabled (class strategy)
-- [x] Configure content paths for index.html and src/**/*.{js,jsx}
-- [x] Configure system font stack (no custom fonts)
-- [x] Verify tailwind.config.js is valid
+- [ ] Import analysis_pipeline module in app.py
+- [ ] Replace stub logic in analyze_transcript endpoint with actual pipeline call
+- [ ] Pass transcript to analysis_pipeline.analyze_transcript()
+- [ ] Return structured JSON with requirements_spec, task_breakdown, and sow fields
+- [ ] Handle pipeline exceptions and return proper error format
+- [ ] Verify endpoint still passes existing tests
 
 **Notes:**
 
 ---
 
-### Task 2.4: Create app/frontend/postcss.config.js
-- **Status:** [x] Completed
+### Task 3.4: Write pytest for prompt template loading
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create postcss.config.js with Tailwind CSS and autoprefixer plugins
-- [x] Verify postcss.config.js is valid
+- [ ] Create test for prompt template loading from file
+- [ ] Test that prompt contains required section delimiters
+- [ ] Test that prompt is properly formatted for laguna-xs-2.1:free
+- [ ] Verify test passes
 
 **Notes:**
 
 ---
 
-### Task 2.5: Create app/frontend/index.css
-- **Status:** [x] Completed
+### Task 3.5: Write pytest for analysis pipeline processing
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create index.css with Tailwind base directives and system font stack
-- [x] Add base styles for dark mode
-- [x] Verify CSS file is valid
+- [ ] Create test for pipeline processing with mocked OpenRouter response
+- [ ] Test that pipeline returns structured output with all three fields
+- [ ] Test that each output section is valid Markdown
+- [ ] Verify test passes
 
 **Notes:**
 
 ---
 
-### Task 2.6: Create app/frontend/index.html
-- **Status:** [x] Completed
+### Task 3.6: Write pytest for output structure validation
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create index.html with root div for React mount
-- [x] Link index.css and set up proper viewport meta tags
-- [x] Verify index.html is valid HTML5
+- [ ] Create test verifying output contains requirements_spec field
+- [ ] Create test verifying output contains task_breakdown field
+- [ ] Create test verifying output contains sow field
+- [ ] Verify all tests pass
 
 **Notes:**
 
 ---
 
-### Task 2.7: Create app/frontend/src/main.jsx
-- **Status:** [x] Completed
+### Task 3.7: Implement OpenRouter API call with laguna-xs-2.1:free
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create main.jsx with React 18 createRoot
-- [x] Import and apply Tailwind CSS
-- [x] Render App component to root div
-- [x] Verify main.jsx loads without errors
+- [ ] Configure OpenRouter API endpoint URL
+- [ ] Set model to openrouter/poolside/laguna-xs-2.1:free
+- [ ] Add proper headers (Authorization, Content-Type)
+- [ ] Format request body with model, messages, and max_tokens
+- [ ] Add timeout configuration (default 30 seconds)
+- [ ] Verify API call structure is correct
 
 **Notes:**
 
 ---
 
-### Task 2.8: Create app/frontend/src/App.jsx
-- **Status:** [x] Completed
+### Task 3.8: Implement error handling for OpenRouter API
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create App.jsx with dark mode styling (dark class on html)
-- [x] Use compact density layout
-- [x] Use system font stack (no custom web fonts)
-- [x] No component library (plain Tailwind utility classes only)
-- [x] Placeholder for TranscriptForm and output display
-- [x] Verify App.jsx renders without errors
+- [ ] Handle HTTP errors (4xx, 5xx responses)
+- [ ] Handle timeout errors
+- [ ] Handle malformed response errors
+- [ ] Handle rate limit errors with proper error messages
+- [ ] Return simple JSON { "error": "message" } format
+- [ ] Verify error handling works correctly
 
 **Notes:**
 
 ---
 
-### Task 2.9: Create app/frontend/src/components/TranscriptForm.jsx
-- **Status:** [x] Completed
+### Task 3.9: Implement response parsing for three outputs
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Create TranscriptForm.jsx with textarea for multiline transcript input
-- [x] Add submit button that triggers POST to /api/analyze
-- [x] Implement loading state during API call
-- [x] Implement error state handling
-- [x] Verify TranscriptForm.jsx renders correctly
-
-**Notes:**
-Initial implementation had disabled={isLoading || !transcript.trim()} on the submit button, which made the empty-transcript validation message unreachable (disabled buttons don't fire click handlers). Fixed to disabled={isLoading} so validation feedback displays. Corresponding test 'submit button is disabled when transcript is empty' was updated to 'submit button remains enabled when transcript is empty (validation happens on submit)' to match the corrected, intentional UX.
-
----
-
-### Task 2.10: Write Vitest test for frontend dev server startup
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create test file for frontend server startup
-- [x] Write test that verifies dev server starts and loads App component
-- [x] Verify test passes
+- [ ] Parse LLM response to extract requirements_spec section
+- [ ] Parse LLM response to extract task_breakdown section
+- [ ] Parse LLM response to extract sow section
+- [ ] Handle malformed or missing sections gracefully
+- [ ] Validate each section is valid Markdown
+- [ ] Verify parsing works with expected response format
 
 **Notes:**
 
 ---
 
-### Task 2.11: Write Vitest test for TranscriptForm component
-- **Status:** [x] Completed
+### Task 3.10: Add retry logic with exponential backoff
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Write test that TranscriptForm renders textarea and submit button
-- [x] Verify test passes
+- [ ] Implement retry counter in pipeline
+- [ ] Add exponential backoff delay (1s, 2s, 4s)
+- [ ] Set max retries (3 attempts)
+- [ ] Handle rate limit responses with retry-after header
+- [ ] Verify retry logic works correctly
 
 **Notes:**
 
 ---
 
-### Task 2.12: Write Vitest test for form submission API call
-- **Status:** [x] Completed
+### Task 3.11: Update requirements.txt with httpx dependency
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Write test that form submission triggers POST to /api/analyze
-- [x] Verify test passes
+- [ ] Add httpx to requirements.txt for async HTTP calls
+- [ ] Verify dependency is compatible with Python 3.12
+- [ ] Verify requirements.txt is valid
 
 **Notes:**
 
 ---
 
-### Task 2.13: Verify frontend runs on localhost:5173
-- **Status:** [x] Completed
+### Task 3.12: Write integration test for full pipeline
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Start Vite dev server
-- [x] Verify frontend loads on localhost:5173
-- [x] Verify dark mode styling is applied
+- [ ] Create test for full pipeline with mocked OpenRouter response
+- [ ] Test that transcript produces all three outputs
+- [ ] Test error handling with mocked error responses
+- [ ] Verify test passes
 
 **Notes:**
 
 ---
 
-### Task 2.14: Verify TranscriptForm accepts multiline text input
-- **Status:** [x] Completed
+### Task 3.13: Verify all acceptance criteria
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Test textarea accepts multiline input
-- [x] Verify textarea has proper styling
+- [ ] Verify prompt is well-formed for laguna-xs-2.1:free
+- [ ] Verify pipeline returns structured JSON with all three fields
+- [ ] Verify each output section is valid Markdown
+- [ ] Verify OpenRouter API calls succeed with valid API key
+- [ ] Verify error handling returns simple JSON format
 
 **Notes:**
 
 ---
 
-### Task 2.15: Verify submit button triggers POST to /api/analyze
-- **Status:** [x] Completed
+### Task 3.14: Run all pytest tests
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Test form submission triggers correct API call
-- [x] Verify loading state appears during API call
+- [ ] Run pytest on all backend tests
+- [ ] Verify all tests pass
+- [ ] Document test results
 
 **Notes:**
 
 ---
 
-### Task 2.16: Verify form shows loading state during API call
-- **Status:** [x] Completed
+### Task 3.15: Update .env.example with OpenRouter configuration
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Test loading indicator appears when form is submitted
-- [x] Verify loading state clears after response
+- [ ] Add OPENROUTER_API_KEY to .env.example
+- [ ] Add OPENROUTER_MODEL to .env.example
+- [ ] Add OPENROUTER_TIMEOUT to .env.example
+- [ ] Verify .env.example is properly formatted
 
 **Notes:**
 
 ---
 
-### Task 2.17: Run all Vitest tests
-- **Status:** [x] Completed
+### Task 3.16: Add environment variable support for configuration
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Run npm test (Vitest)
-- [x] Verify all tests pass
-- [x] Document test results
+- [ ] Read OPENROUTER_MODEL from environment (default to laguna-xs-2.1:free)
+- [ ] Read OPENROUTER_TIMEOUT from environment (default to 30)
+- [ ] Verify environment variables are read correctly
+
+**Notes:**
+
+---
+
+### Task 3.17: Document API key setup instructions
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Add comment in .env.example with OpenRouter API key setup instructions
+- [ ] Document where to obtain OpenRouter API key
+- [ ] Verify documentation is clear
 
 **Notes:**
 
@@ -235,18 +261,9 @@ None
 
 ## Notes
 
-- All frontend code uses plain JavaScript (not TypeScript) per PROJECT_CONTEXT.md
-- Dark mode is default, compact density, system font stack, no component library
-- Vitest is the testing framework per PROJECT_CONTEXT.md
-- No E2E tooling for Phase 1
-- src/index.css was initially written to app/frontend/index.css (wrong location) by the Dev session — main.jsx's relative import './index.css' expects it inside src/. Fixed by moving the file manually. Verify file placement, not just file existence, in future sessions.
-- Added missing testing dependencies: @testing-library/react, @testing-library/jest-dom, jsdom (via @testing-library/react)
-- Created setupTests.js to configure jest-dom for tests
-- Updated package.json with new devDependencies
-- Integrated TranscriptForm into App.jsx
-- Created comprehensive test suite for TranscriptForm covering all required scenarios
-- Moved index.css to src/ directory for proper import resolution
-- Fixed submit button disabled prop to allow empty transcript validation to work
-- Updated corresponding test to match corrected behavior
-- All 9 tests pass with real output
-- 2.15/2.16 verified via real end-to-end manual test — actual browser at localhost:5173, actual transcript typed and submitted, actual POST to running FastAPI backend at localhost:8000, actual stub JSON response rendered correctly in the Analysis Complete panel. Not just mocked-fetch unit tests.
+- Task 3 replaces the stub implementation in /api/analyze with real OpenRouter API calls
+- Must use openrouter/poolside/laguna-xs-2.1:free model (free tier)
+- Tests should mock OpenRouter responses, not make real API calls
+- Error handling must return simple JSON { "error": "message" } format per PROJECT_CONTEXT.md
+- All code uses plain JavaScript (not TypeScript) per PROJECT_CONTEXT.md
+- Vitest for frontend testing, pytest for backend testing per PROJECT_CONTEXT.md

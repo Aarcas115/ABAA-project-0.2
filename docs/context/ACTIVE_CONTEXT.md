@@ -1,17 +1,17 @@
-# Active Context: ABAA — Phase 1 Implementation Plan (Task 2 Ready)
+# Active Context: ABAA — Phase 1 Implementation Plan (Task 3 Ready)
 
 ## Session Metadata
 
 - **Last Updated:** 2026-08-12
-- **Session ID:** abaa-phase1-task2-planning
+- **Session ID:** abaa-phase1-task3-planning
 - **Active Role:** Developer
-- **Mode:** VERIFICATION
+- **Mode:** EXECUTION
 
 ---
 
 ## Current Objective
 
-Execute Task 2: Frontend Scaffold with Transcript Input Form
+Execute Task 3: LLM Pipeline Integration
 
 ---
 
@@ -25,7 +25,7 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
 
 ### In Progress
 
-- None - awaiting QA Engineer pass for Task 2
+- None - awaiting Developer session to begin Task 3
 
 ### Completed
 
@@ -34,13 +34,18 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
   - All 17 subtasks completed
   - All 9 Vitest tests pass
   - End-to-end manual verification completed
+  - QA-approved — walkthrough.md shows APPROVED, 9/9 Vitest tests genuinely verified, real end-to-end browser test confirmed against live backend
 
 ---
 
 ## Next Steps
 
-1. QA Engineer pass for Task 2
-2. Begin Task 3: LLM Prompt Engineering for Transcript Analysis
+1. Begin Task 3: LLM Pipeline Integration in fresh Developer session
+2. Create prompts/transcript_analysis.txt with well-formed prompt
+3. Create analysis_pipeline.py with OpenRouter integration
+4. Modify app.py to use real pipeline instead of stub
+5. Write pytest tests for new pipeline logic
+6. Verify all acceptance criteria met
 
 ---
 
@@ -64,14 +69,15 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
 
 ## Session Notes
 
-- Task 2 is the second task in the Phase 1 implementation
-- Frontend must run on localhost:5173
-- Backend API runs on localhost:8000
-- Need to configure CORS for frontend-backend communication
+- Task 3 is the third task in the Phase 1 implementation
+- Must replace stub /api/analyze endpoint with real OpenRouter API calls
+- OpenRouter API key required from environment variable
+- Must use openrouter/poolside/laguna-xs-2.1:free model
+- Tests should mock OpenRouter responses
+- Error handling must return simple JSON { "error": "message" } format
 - All 6 tests from Task 1 passed in actual pytest run
-- Verification completed: npm install succeeded (with accepted moderate esbuild dev-server-only vulnerability), npm run dev started successfully on localhost:5173, page loads showing dark background, ABAA header, and both placeholder sections
-- All 9 Vitest tests pass
-- End-to-end manual verification completed: actual browser at localhost:5173, actual transcript typed and submitted, actual POST to running FastAPI backend at localhost:8000, actual stub JSON response rendered correctly in the Analysis Complete panel
+- All 9 Vitest tests from Task 2 passed
+- Verification completed: real end-to-end browser test confirmed against live backend
 
 ---
 
@@ -85,3 +91,4 @@ Execute Task 2: Frontend Scaffold with Transcript Input Form
 - **Project Context:** docs/context/PROJECT_CONTEXT.md
 - **Walkthrough:** docs/planning/walkthrough.md
 - **Task 1 Result:** docs/progress/task_1_result.md
+- **Task 2 Result:** docs/progress/task_2_result.md
