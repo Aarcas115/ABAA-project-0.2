@@ -17,8 +17,8 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
 
 - [x] Requirements analyzed and understood
 - [x] Relevant ADRs reviewed (none required for Phase 1)
-- [ ] Dependencies identified (OpenRouter API key required)
-- [ ] Environment ready (Node.js, Python 3.12, OpenRouter account)
+- [x] Dependencies identified (OpenRouter API key required)
+- [x] Environment ready (Node.js, Python 3.12, OpenRouter account)
 - [x] Plan approved by stakeholder
 
 ---
