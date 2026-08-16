@@ -37,6 +37,7 @@ Execute Task 3: LLM Pipeline Integration
   - QA-approved — walkthrough.md shows APPROVED, 9/9 Vitest tests genuinely verified, real end-to-end browser test confirmed against live backend
 - Task 3.1: Create LLM prompt template (complete)
   - Prompt revised to reference PRD/TECH_SPEC/SOW templates instead of generic instructions
+  - Prompt revised a second time to fix Requirements table (FR-XXX/NFR-XXX), SOW table structures, and task breakdown format with component-tag IDs and acceptance criteria
 
 ---
 

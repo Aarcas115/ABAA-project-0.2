@@ -4,91 +4,101 @@ TRANSCRIPT:
 {transcript}
 
 ===REQUIREMENTS_SPEC===
-Write a comprehensive requirements and technical specification document structured following the PRD-template.md and TECH_SPEC-template.md formats.
+Write a comprehensive requirements and technical specification document.
 
 Audience: Internal technical readers (developers, business analyst). Tone: Clear, precise, technical.
 
 Structure your output using the following sections (adapt based on transcript content):
 
-## Overview
-- Summary: Brief technical summary of the implementation approach
-- Scope: What is in scope and out of scope
+## Problem Statement
+- **Current State:** [Description of the current situation]
+- **Pain Points:** [List of key pain points]
+- **Impact:** [Quantify the impact of not solving this problem]
 
-## Architecture
-- System Context diagram (ASCII art)
-- Component Design diagram (ASCII art)
-- Data Flow description
+## Goals
+- **Primary Goals:** [Main goals this feature achieves]
+- **Non-Goals:** [Explicitly out of scope items]
 
-## Detailed Design
-- Component: [Name] with Purpose, Responsibilities, Interface, Dependencies
-- Repeat for each component
+## Requirements
+| ID | Requirement | Priority | Notes |
+|----|-------------|----------|-------|
+| FR-001 | [Functional requirement description] | Must | |
+| FR-002 | [Functional requirement description] | Should | |
+| NFR-001 | [Non-functional requirement description] | Must | |
+| NFR-002 | [Non-functional requirement description] | Should | |
 
-## Data Model
-- Entities table with Field, Type, Constraints, Description columns
-- Relationships diagram
+## Technical Considerations
+- **Dependencies:** [External services or systems]
+- **Constraints:** [Technical constraints]
+- **Risks:** [Risk table with Risk | Likelihood | Impact | Mitigation]
 
-## API Design
-- Endpoints table with METHOD, Path, Description, Authentication, Request, Response, Errors
-
-## Security Considerations
-- Authentication, Authorization, Data Protection, Threat Model table
-
-## Performance Considerations
-- Expected Load, Optimization Strategies, Caching
-
-## Testing Strategy
-- Unit Tests, Integration Tests, Performance Tests
-
-## Deployment
-- Dependencies, Configuration table, Rollout Plan, Rollback Plan
-
-## Monitoring
-- Metrics table, Logging, Alerts
-
-## Open Questions
-- List any technical questions requiring resolution
-
-## ADR References
-- Link to relevant ADRs
-
-## Appendix
-- Glossary table, References
+## Timeline
+| Milestone | Target Date |
+|-----------|-------------|
+| [Milestone description] | [Date] |
 
 If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
 
 ===END_REQUIREMENTS_SPEC===
 ===TASK_BREAKDOWN===
-Create a detailed task breakdown for developers. Each task should be:
-- Clearly defined and actionable
-- Assignable to a specific developer
-- Include any relevant technical details or dependencies
-- Numbered as a list (1., 2., 3., etc.)
-- Use Markdown formatting (numbered lists, sub-bullets for details)
+Create a detailed task breakdown for developers. Each task must include:
 
-If the transcript does not contain enough information to fill any task, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
+- **Task ID**: a component-tag ID (e.g. BACKEND-001, FRONTEND-002, API-003, DB-004, INFRA-005)
+- **Title**: short one-line task title
+- **Description**: 1-3 sentences describing what needs to be built
+- **Depends on**: a list of other Task IDs this task depends on, or "None"
+- **Acceptance Criteria**: a Markdown checklist of 2-4 concrete, verifiable criteria
+
+Format each task as a Markdown subsection:
+
+### BACKEND-001: [Title]
+**Description:** [...]
+**Depends on:** [None | BACKEND-000, API-001]
+**Acceptance Criteria:**
+- [ ] [...]
+- [ ] [...]
+
+Do NOT include effort estimates (story points, S/M/L sizing, hour/day estimates).
+
+If the transcript does not contain enough information to fill any task's acceptance criteria or dependencies, mark that specific field `[NEEDS CLARIFICATION]` rather than inventing it — but still create the task itself if the transcript implies the work is needed.
 
 ===END_TASK_BREAKDOWN===
 ===SOW===
-Write a Statement of Work document structured following the SOW-template.md format.
+Write a Statement of Work document.
 
 Audience: Client-facing/contractual-adjacent document. Tone: Formal, precise, professional.
 
-Generate content for the following numbered sections (adapt based on transcript content):
+Generate content for the following sections (adapt based on transcript content):
 
-1. Project Name
-2. Project Term
-3. Service Description
-4. Staffing
-5. Milestones and Deliverables
-6. Location of Services
-7. Fees
-8. Management
-9. Special Conditions
-10. Business Continuity
-11. Exhibit A: Project Plan and Service Descriptions
+1. **Project Name** — short descriptive name
 
-If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
+2. **Project Term** — start date, end date
+
+3. **Service Description** — 1-2 paragraph plain-language summary
+
+4. **Staffing** — table: # | Role | Location | Rate | Duration | Headcount
+
+5. **Milestones and Deliverables** — table: Milestone/Deliverable | Description | Target Date (or a single `[NEEDS CLARIFICATION]` row if the transcript gives no discrete milestones)
+
+6. **Location of Services** — table: Location Name | Country | Address
+
+7. **Fees** — total not-to-exceed amount, billing basis (Time and Materials / Fixed Price / Milestone-Based), plus table: # | Role | Start Date | End Date | Headcount | Hours/Units | Rate | Total
+
+8. **Management** — two tables (Client Management, Vendor Management), each with Title | Name columns
+
+9. **Special Conditions** — free text, or `[NEEDS CLARIFICATION]` / "N/A"
+
+10. **Business Continuity** — free text, or `[NEEDS CLARIFICATION]` / "N/A"
+
+11. **Exhibit A: Project Plan and Service Descriptions**
+    - **Background** (1-2 paragraphs)
+    - **Project Description** (summary paragraph)
+    - **Scope of Services** (bulleted list)
+    - **Responsibilities** (split into Vendor: / Client: bulleted lists)
+    - **Dependencies/Assumptions** (bulleted list, or "N/A")
 
 Note: Do NOT generate the legal preamble, signature/execution block, or party-name boilerplate — those are handled outside the LLM.
+
+If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
 
 ===END_SOW===

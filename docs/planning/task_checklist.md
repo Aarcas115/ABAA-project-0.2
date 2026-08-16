@@ -33,6 +33,7 @@
 
 **Notes:**
 - Prompt was revised to reference PRD-template.md, TECH_SPEC-template.md, and SOW-template.md structures instead of generic bullet-point instructions
+- Prompt was revised a second time to fix the Requirements table (FR-XXX/NFR-XXX), SOW table structures, and task breakdown format with component-tag IDs and acceptance criteria
 
 ---
 
