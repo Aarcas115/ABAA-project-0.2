@@ -33,12 +33,12 @@ describe('TranscriptForm', () => {
     expect(textarea.value).toBe(multilineText)
   })
 
-  test('submit button is disabled when transcript is empty', () => {
+  test('submit button remains enabled when transcript is empty (validation happens on submit)', () => {
     render(<TranscriptForm />)
     
     const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
     
-    expect(submitButton).toBeDisabled()
+    expect(submitButton).toBeEnabled()
   })
 
   test('submit button is enabled when transcript has content', () => {
