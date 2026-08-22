@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
+import analysis_pipeline
 
 # Load environment variables
 load_dotenv()
@@ -45,12 +46,23 @@ async def analyze_transcript(request: TranscriptRequest):
             detail={"error": "Transcript field is required and must be non-empty"}
         )
     
-    # Return placeholder/stub JSON response
-    return {
-        "requirements_spec": "stub",
-        "task_breakdown": "stub",
-        "sow": "stub"
-    }
+    try:
+        return analysis_pipeline.analyze_transcript(request.transcript)
+    except analysis_pipeline.OpenRouterRateLimitError as e:
+        raise HTTPException(
+            status_code=429,
+            detail={"error": str(e)}
+        )
+    except analysis_pipeline.OpenRouterError as e:
+        raise HTTPException(
+            status_code=500,
+            detail={"error": str(e)}
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail={"error": str(e)}
+        )
 
 # Global exception handler for HTTPException
 @app.exception_handler(HTTPException)

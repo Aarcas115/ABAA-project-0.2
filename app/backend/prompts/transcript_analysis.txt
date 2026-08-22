@@ -3,6 +3,15 @@ You are an AI Business Analyst Assistant. Analyze the following client meeting t
 TRANSCRIPT:
 {transcript}
 
+IMPORTANT: You MUST use the exact literal delimiter strings below, character-for-character, on their own lines. These delimiters are REQUIRED for a downstream program to extract your output. Do NOT use Markdown headers, bold, code fences, or any other formatting around them.
+
+The three section delimiters you MUST write exactly as shown:
+- ===REQUIREMENTS_SPEC=== at the start, and ===END_REQUIREMENTS_SPEC=== at the end
+- ===TASK_BREAKDOWN=== at the start, and ===END_TASK_BREAKDOWN=== at the end  
+- ===SOW=== at the start, and ===END_SOW=== at the end
+
+Do NOT write '### Requirements Specification' or similar Markdown headers — you MUST write the literal line '===REQUIREMENTS_SPEC===' with no other formatting. Any deviation will cause the section to be lost.
+
 ===REQUIREMENTS_SPEC===
 Write a comprehensive requirements and technical specification document.
 
@@ -38,8 +47,8 @@ Structure your output using the following sections (adapt based on transcript co
 | [Milestone description] | [Date] |
 
 If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
-
 ===END_REQUIREMENTS_SPEC===
+
 ===TASK_BREAKDOWN===
 Create a detailed task breakdown for developers. Each task must include:
 
@@ -61,8 +70,8 @@ Format each task as a Markdown subsection:
 Do NOT include effort estimates (story points, S/M/L sizing, hour/day estimates).
 
 If the transcript does not contain enough information to fill any task's acceptance criteria or dependencies, mark that specific field `[NEEDS CLARIFICATION]` rather than inventing it — but still create the task itself if the transcript implies the work is needed.
-
 ===END_TASK_BREAKDOWN===
+
 ===SOW===
 Write a Statement of Work document.
 
@@ -100,5 +109,6 @@ Generate content for the following sections (adapt based on transcript content):
 Note: Do NOT generate the legal preamble, signature/execution block, or party-name boilerplate — those are handled outside the LLM.
 
 If the transcript does not contain enough information to fill any section or table row, write `[NEEDS CLARIFICATION]` in that spot. Do not invent details, dates, names, or numbers.
-
 ===END_SOW===
+
+REMINDER: You MUST use the exact literal delimiter strings shown above. Do NOT substitute Markdown headers or any other formatting. The strings ===REQUIREMENTS_SPEC===, ===END_REQUIREMENTS_SPEC===, ===TASK_BREAKDOWN===, ===END_TASK_BREAKDOWN===, ===SOW===, and ===END_SOW=== must appear exactly as written, character-for-character, on their own lines.
