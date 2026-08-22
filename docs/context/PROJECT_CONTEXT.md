@@ -66,7 +66,8 @@ ABAA (AI Business Analyst Assistant) is a web app that automates a Business Anal
 
 - **Frontend**: React + Vite, plain JavaScript (not TypeScript), Tailwind CSS 3
 - **Backend**: Python
-- **LLM Provider**: OpenRouter free tier, model openrouter/poolside/laguna-xs-2.1:free
+- **LLM Provider**: OpenRouter free tier, model poolside/laguna-xs-2.1:free
+- NOTE: (corrected 2026-08-16 — "openrouter/" prefix is not part of the model ID)
 - **Hosting**: Render — frontend static site and backend web service deployed as two separate services, no local dev process required for the deployed app
 - **Constraint**: Every tool/service used must be free (hard constraint, no paid tiers anywhere in the stack)
 

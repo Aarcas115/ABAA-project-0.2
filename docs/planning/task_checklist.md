@@ -1,10 +1,10 @@
-# Task Checklist: Task 3 - LLM Prompt Engineering for Transcript Analysis
+# Task Checklist: Task 5 - Manual Verification Checklist
 
 > **Plan Reference:** docs/planning/implementation_plan.md
-> **Task ID:** 3
-> **Last Updated:** 2026-08-12
-> **Current Role:** Developer
-> **Mode:** EXECUTION
+> **Task ID:** 5
+> **Last Updated:** 2026-08-22
+> **Current Role:** Architect
+> **Mode:** PLANNING
 
 ---
 
@@ -12,234 +12,166 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 11 |
+| Completed | 0 |
 | In Progress | 0 |
-| Pending | 5 |
+| Pending | 12 |
 | Blocked | 0 |
 
 ---
 
 ## Tasks
 
-### Task 3.1: Create app/backend/prompts/transcript_analysis.txt
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create prompts directory under app/backend/
-- [x] Create transcript_analysis.txt with well-formed prompt for laguna-xs-2.1:free
-- [x] Include clear section delimiters for requirements_spec, task_breakdown, and sow
-- [x] Add instructions for Markdown formatting in each section
-- [x] Verify prompt file is valid and readable
-
-**Notes:**
-- Prompt was revised to reference PRD-template.md, TECH_SPEC-template.md, and SOW-template.md structures instead of generic bullet-point instructions
-- Prompt was revised a second time to fix the Requirements table (FR-XXX/NFR-XXX), SOW table structures, and task breakdown format with component-tag IDs and acceptance criteria
-
----
-
-### Task 3.2: Create app/backend/analysis_pipeline.py
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create analysis_pipeline.py module
-- [x] Implement load_prompt() function to read transcript_analysis.txt
-- [x] Implement call_openrouter() function with proper API integration
-- [x] Implement parse_response() function to extract three sections from LLM output
-- [x] Implement analyze_transcript() main pipeline function
-- [x] Add timeout handling for API calls
-- [x] Verify analysis_pipeline.py imports and functions correctly
-
-**Notes:**
-- Prompt was revised to reference PRD/TECH_SPEC/SOW templates instead of generic instructions
-- Prompt was revised a second time to fix Requirements table (FR-XXX/NFR-XXX), SOW table structures, and task breakdown format with component-tag IDs and acceptance criteria
-- Module imports cleanly with no syntax errors
-- All four function signatures match specification exactly
-
----
-
-### Task 3.3: Modify app/backend/app.py to integrate pipeline
+### Task 5.0: Decide structure/format of the manual verification doc
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Import analysis_pipeline module in app.py
-- [ ] Replace stub logic in analyze_transcript endpoint with actual pipeline call
-- [ ] Pass transcript to analysis_pipeline.analyze_transcript()
-- [ ] Return structured JSON with requirements_spec, task_breakdown, and sow fields
-- [ ] Handle pipeline exceptions and return proper error format
-- [ ] Verify endpoint still passes existing tests
+- [ ] Determine overall document structure (Prerequisites, Sample Transcript, Verification Steps, Expected Outputs, Error Scenarios)
+- [ ] Define heading hierarchy and section order
+- [ ] Select appropriate Markdown formatting conventions
+- [ ] Document the chosen structure in Notes
 
 **Notes:**
 
 ---
 
-### Task 3.4: Write pytest for prompt template loading
+### Task 5.1: Draft "Prerequisites" section
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Create test for prompt template loading from file
-- [ ] Test that prompt contains required section delimiters
-- [ ] Test that prompt is properly formatted for laguna-xs-2.1:free
-- [ ] Verify test passes
+- [ ] List required environment variables (OPENROUTER_API_KEY)
+- [ ] Document server startup commands and ports (frontend: 5173, backend: 8000)
+- [ ] Specify OpenRouter API key configuration steps
+- [ ] Verify all prerequisites are testable
 
 **Notes:**
 
 ---
 
-### Task 3.5: Write pytest for analysis pipeline processing
+### Task 5.2: Draft/include a sample client-meeting transcript fixture
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Create test for pipeline processing with mocked OpenRouter response
-- [ ] Test that pipeline returns structured output with all three fields
-- [ ] Test that each output section is valid Markdown
-- [ ] Verify test passes
+- [ ] Create a realistic client meeting transcript
+- [ ] Include typical business requirements discussion points
+- [ ] Ensure transcript is long enough to generate meaningful outputs
+- [ ] Format transcript for easy copy-paste into the form
 
 **Notes:**
 
 ---
 
-### Task 3.6: Write pytest for output structure validation
+### Task 5.3: Draft step-by-step verification steps
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Create test verifying output contains requirements_spec field
-- [ ] Create test verifying output contains task_breakdown field
-- [ ] Create test verifying output contains sow field
-- [ ] Verify all tests pass
+- [ ] Document the transcript paste → submit → observe workflow
+- [ ] Include screenshots or expected UI states at each step
+- [ ] Specify how to verify loading states
+- [ ] Define success criteria for each step
 
 **Notes:**
 
 ---
 
-### Task 3.7: Implement OpenRouter API call with laguna-xs-2.1:free
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Configure OpenRouter API endpoint URL
-- [x] Set model to openrouter/poolside/laguna-xs-2.1:free
-- [x] Add proper headers (Authorization, Content-Type)
-- [x] Format request body with model, messages, and max_tokens
-- [x] Add timeout configuration (default 30 seconds)
-- [x] Verify API call structure is correct
-
-**Notes:**
-
----
-
-### Task 3.8: Implement error handling for OpenRouter API
+### Task 5.4: Draft "Expected Outputs" section
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Handle HTTP errors (4xx, 5xx responses)
-- [ ] Handle timeout errors
-- [ ] Handle malformed response errors
-- [ ] Handle rate limit errors with proper error messages
-- [ ] Return simple JSON { "error": "message" } format
-- [ ] Verify error handling works correctly
+- [ ] Create subsection for Requirements Spec acceptance criterion
+- [ ] Create subsection for Task Breakdown acceptance criterion
+- [ ] Create subsection for SOW acceptance criterion
+- [ ] Document what each output should contain
 
 **Notes:**
 
 ---
 
-### Task 3.9: Implement response parsing for three outputs
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Parse LLM response to extract requirements_spec section
-- [x] Parse LLM response to extract task_breakdown section
-- [x] Parse LLM response to extract sow section
-- [x] Handle malformed or missing sections gracefully
-- [ ] Validate each section is valid Markdown
-
-**Notes:**
-
----
-
-### Task 3.10: Add retry logic with exponential backoff
+### Task 5.5: Draft "Error Scenarios" section
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Implement retry counter in pipeline
-- [ ] Add exponential backoff delay (1s, 2s, 4s)
-- [ ] Set max retries (3 attempts)
-- [ ] Handle rate limit responses with retry-after header
-- [ ] Verify retry logic works correctly
+- [ ] Document empty transcript error handling
+- [ ] Document malformed input error handling
+- [ ] Document backend unreachable error handling
+- [ ] Verify all errors follow { "error": "message" } format
 
 **Notes:**
 
 ---
 
-### Task 3.11: Write integration test for full pipeline
+### Task 5.6: Create docs/verification/manual-verification.md
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Create test for full pipeline with mocked OpenRouter response
-- [ ] Test that transcript produces all three outputs
-- [ ] Test error handling with mocked error responses
-- [ ] Verify test passes
+- [ ] Combine sections 5.1-5.5 into single document
+- [ ] Apply consistent formatting and styling
+- [ ] Verify document structure matches 5.0 decisions
+- [ ] Ensure document is ready for manual testing
 
 **Notes:**
 
 ---
 
-### Task 3.12: Verify all acceptance criteria
+### Task 5.7: Manually run sample transcript through pipeline
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Verify prompt is well-formed for laguna-xs-2.1:free
-- [ ] Verify pipeline returns structured JSON with all three fields
-- [ ] Verify each output section is valid Markdown
-- [ ] Verify OpenRouter API calls succeed with valid API key
-- [ ] Verify error handling returns simple JSON format
+- [ ] Start both frontend and backend servers
+- [ ] Paste sample transcript into form
+- [ ] Submit and observe all three outputs generate
+- [ ] Confirm no errors occur during processing
 
 **Notes:**
 
 ---
 
-### Task 3.13: Run all pytest tests
+### Task 5.8: Manually run invalid-input case through pipeline
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Run pytest on all backend tests
-- [ ] Verify all tests pass
-- [ ] Document test results
+- [ ] Test empty transcript submission
+- [ ] Test malformed input submission
+- [ ] Test backend unreachable scenario
+- [ ] Verify proper error messages are returned
 
 **Notes:**
 
 ---
 
-### Task 3.14: Update .env.example with OpenRouter configuration
+### Task 5.9: Cross-check finished doc against acceptance criteria
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Add OPENROUTER_API_KEY to .env.example
-- [ ] Add OPENROUTER_MODEL to .env.example
-- [ ] Add OPENROUTER_TIMEOUT to .env.example
-- [ ] Verify .env.example is properly formatted
+- [ ] Verify Requirements Spec contains business requirements section
+- [ ] Verify Task Breakdown contains numbered task list
+- [ ] Verify SOW contains scope, deliverables, and timeline sections
+- [ ] Document any discrepancies found
 
 **Notes:**
 
 ---
 
-### Task 3.15: Add environment variable support for configuration
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Read OPENROUTER_MODEL from environment (default to laguna-xs-2.1:free)
-- [x] Read OPENROUTER_TIMEOUT from environment (default to 30)
-- [x] Verify environment variables are read correctly
-
-**Notes:**
-
----
-
-### Task 3.16: Document API key setup instructions
+### Task 5.10: Documentation pass - update README.md
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Add comment in .env.example with OpenRouter API key setup instructions
-- [ ] Document where to obtain OpenRouter API key
-- [ ] Verify documentation is clear
+- [ ] Review current README.md content
+- [ ] Add completion notes for Task 4
+- [ ] Add completion notes for Task 5
+- [ ] Verify documentation is accurate and complete
+
+**Notes:**
+
+---
+
+### Task 5.11: Update docs/context/ACTIVE_CONTEXT.md for Phase 1 completion
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Mark Phase 1 (Core Pipeline MVP) as complete
+- [ ] Update session metadata and role
+- [ ] Document final state of all tasks
+- [ ] Verify context is accurate for next phase
 
 **Notes:**
 
@@ -253,14 +185,7 @@ None
 
 ## Notes
 
-- Task 3 replaces the stub implementation in /api/analyze with real OpenRouter API calls
-- Must use openrouter/poolside/laguna-xs-2.1:free model (free tier)
-- Tests should mock OpenRouter responses, not make real API calls
-- Error handling must return simple JSON { "error": "message" } format per PROJECT_CONTEXT.md
-- All code uses Python 3.12 per PROJECT_CONTEXT.md, matching Task 1's backend conventions
-- Retry logic and detailed HTTP error handling deferred to next session
-- analysis_pipeline.py created with all four required functions
-- requirements.txt updated to include `requests` library
-- parse_response() bug fixed: content is now stored unconditionally once delimiters are found
-- Progress Summary table corrected to reflect actual completed/pending counts
-- Task 3.9's Markdown validation checkbox unchecked (only light sanity check implemented)
+- Task 5 depends on Task 4 being fully complete (including 4.10-4.16)
+- This checklist was authored by the Architect during the PLANNING phase
+- All subtasks are currently pending and await Developer-mode execution
+- The manual verification document will be created in docs/verification/manual-verification.md
