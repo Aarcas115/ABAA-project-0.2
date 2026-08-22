@@ -134,7 +134,8 @@ describe('TranscriptForm', () => {
     })
   })
 
-  test('displays result after successful API call', async () => {
+  test('calls onResult callback with response data on successful API call', async () => {
+    const mockOnResult = vi.fn()
     const mockResponse = {
       requirements_spec: '# Requirements\n- Requirement 1',
       task_breakdown: '- Task 1\n- Task 2',
@@ -146,7 +147,7 @@ describe('TranscriptForm', () => {
       json: async () => mockResponse,
     })
 
-    render(<TranscriptForm />)
+    render(<TranscriptForm onResult={mockOnResult} />)
     
     const textarea = screen.getByLabelText(/client meeting transcript/i)
     const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
@@ -155,7 +156,7 @@ describe('TranscriptForm', () => {
     fireEvent.click(submitButton)
     
     await waitFor(() => {
-      expect(screen.getByText(/analysis complete/i)).toBeInTheDocument()
+      expect(mockOnResult).toHaveBeenCalledWith(mockResponse)
     })
   })
 })

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 
-function TranscriptForm() {
+function TranscriptForm({ onResult }) {
   const [transcript, setTranscript] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [result, setResult] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -16,7 +15,6 @@ function TranscriptForm() {
 
     setIsLoading(true)
     setError(null)
-    setResult(null)
 
     try {
       const response = await fetch('http://localhost:8000/api/analyze', {
@@ -33,9 +31,14 @@ function TranscriptForm() {
       }
 
       const data = await response.json()
-      setResult(data)
+      if (onResult) {
+        onResult(data)
+      }
     } catch (err) {
       setError(err.message)
+      if (onResult) {
+        onResult(null)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -76,15 +79,6 @@ function TranscriptForm() {
       {error && (
         <div className="p-3 bg-red-900/50 border border-red-700 rounded-lg">
           <p className="text-red-200 text-sm">{error}</p>
-        </div>
-      )}
-
-      {result && (
-        <div className="p-3 bg-green-900/50 border border-green-700 rounded-lg">
-          <p className="text-green-200 text-sm">Analysis complete!</p>
-          <pre className="mt-2 text-xs text-gray-300 overflow-x-auto">
-            {JSON.stringify(result, null, 2)}
-          </pre>
         </div>
       )}
     </div>

@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TranscriptForm from './components/TranscriptForm'
+import OutputDisplay from './components/OutputDisplay'
 
 function App() {
+  const [analysisResult, setAnalysisResult] = useState(null)
+
+  const handleResult = (result) => {
+    setAnalysisResult(result)
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col">
       {/* Header */}
@@ -14,16 +21,14 @@ function App() {
         <section className="mb-6">
           <h2 className="text-lg font-medium mb-4 text-gray-200">Transcript Input</h2>
           <div className="border-2 border-gray-700 rounded-lg p-4 bg-gray-800/50">
-            <TranscriptForm />
+            <TranscriptForm onResult={handleResult} />
           </div>
         </section>
 
         <section>
           <h2 className="text-lg font-medium mb-4 text-gray-200">Analysis Output</h2>
           <div className="border-2 border-gray-700 rounded-lg p-4 bg-gray-800/50">
-            <p className="text-gray-400">
-              [Output display components will be added here in the next session]
-            </p>
+            <OutputDisplay result={analysisResult} />
           </div>
         </section>
       </main>
