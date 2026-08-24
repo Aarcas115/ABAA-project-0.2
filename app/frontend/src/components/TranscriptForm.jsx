@@ -7,7 +7,7 @@ function TranscriptForm({ onResult }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!transcript.trim()) {
       setError('Please enter a transcript')
       return
@@ -17,7 +17,7 @@ function TranscriptForm({ onResult }) {
     setError(null)
 
     try {
-      const response = await fetch('http://localhost:8000/api/analyze', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function TranscriptForm({ onResult }) {
             disabled={isLoading}
           />
         </div>
-        
+
         <button
           type="submit"
           disabled={isLoading}
