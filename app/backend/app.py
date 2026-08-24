@@ -21,7 +21,7 @@ app = FastAPI()
 # Configure CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "https://abaa-project-02.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,7 +45,7 @@ async def analyze_transcript(request: TranscriptRequest):
             status_code=400,
             detail={"error": "Transcript field is required and must be non-empty"}
         )
-    
+
     try:
         return analysis_pipeline.analyze_transcript(request.transcript)
     except analysis_pipeline.OpenRouterRateLimitError as e:
