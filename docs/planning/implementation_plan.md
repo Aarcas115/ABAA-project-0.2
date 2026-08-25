@@ -1,181 +1,168 @@
-# Implementation Plan: ABAA Phase 1 - Core Pipeline MVP
+# Implementation Plan: ABAA Phase 3 - Video/Audio-to-Transcript Pipeline
 
 > **Status:** Draft
-> **Created:** 2026-08-12
+> **Created:** 2026-08-25
 > **Author:** Architect
-> **Requirements Source:** docs/context/PROJECT_CONTEXT.md and project roadmap discussion
+> **Requirements Source:** docs/context/PROJECT_CONTEXT.md (Phase 3 scope)
 
 ---
 
 ## Overview
 
-Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase 1 implementation enables a user to paste a client meeting transcript into a web interface and receive three AI-generated outputs: (1) a Markdown requirements/tech-spec document, (2) a coder-assignable task breakdown, and (3) a Statement of Work (SOW). The system uses OpenRouter's free-tier model (laguna-xs-2.1:free) for LLM processing, with a Python backend and React frontend. No database, authentication, or deployment infrastructure is included in this phase.
+Extend ABAA to accept video and audio files in addition to plain text transcripts. When a file is provided, extract the transcript via Groq's Whisper API, then pass it through the existing reqspec extraction pipeline. The frontend input area is repurposed to accept file drops alongside text paste. No UI/UX changes beyond minimum wiring required.
 
 ---
 
 ## Prerequisites
 
-- [x] Requirements analyzed and understood
-- [x] Relevant ADRs reviewed (none required for Phase 1)
-- [x] Dependencies identified (OpenRouter API key required)
-- [x] Environment ready (Node.js, Python 3.12, OpenRouter account)
-- [x] Plan approved by stakeholder
+- [x] Phase 1/2 implementation complete and deployed
+- [x] Groq API key available (VITE_GROQ_API_KEY)
+- [x] Existing transcript processing pipeline functional
+- [ ] Plan approved by stakeholder
 
 ---
 
 ## Testing Framework
 
 - **Frontend:** Vitest (as per PROJECT_CONTEXT.md)
-- **Backend:** pytest (added for Python backend testing)
+- **Note:** MediaRecorder/AudioContext and Groq fetch calls will be mocked in tests (via vi.mock or manual stubs). Tests validate branching logic, error handling, and state transitions rather than real media processing or live network calls.
 
 ---
 
 ## Tasks
 
-<task id="1">
-  <name>Backend Scaffold with OpenRouter Integration</name>
-  <objective>FastAPI server running on app/backend/ with OpenRouter API integration, exposing a /api/analyze endpoint that accepts transcript text and returns structured analysis results</objective>
+<task id="6">
+  <name>Client-Side File Type Detection</name>
+  <objective>Add file type detection logic to the existing TranscriptForm component to distinguish between plain text, audio files, and video files</objective>
   <files>
-    <create>
-      - app/backend/app.py
-      - app/backend/requirements.txt
-      - app/backend/.env.example
-    </create>
     <modify>
-      - None (fresh scaffold)
+      - app/frontend/src/components/TranscriptForm.jsx
     </modify>
+    <create>
+      - app/frontend/src/utils/fileDetection.js
+    </create>
   </files>
   <tests>
-    <test>Backend server starts and responds to health check (pytest)</test>
-    <test>/api/analyze endpoint accepts POST with transcript and returns JSON (pytest)</test>
-    <test>OpenRouter API key is read from environment variable (pytest)</test>
+    <test>File detection correctly identifies text input (Vitest)</test>
+    <test>File detection correctly identifies audio file types (Vitest)</test>
+    <test>File detection correctly identifies video file types (Vitest)</test>
+    <test>File detection rejects unsupported file types (Vitest)</test>
   </tests>
   <acceptance_criteria>
-    <criterion>Python FastAPI server runs on localhost:8000</criterion>
-    <criterion>POST /api/analyze with {"transcript": "text"} returns 200 with JSON response</criterion>
-    <criterion>OpenRouter API calls succeed with valid API key</criterion>
-    <criterion>Error handling returns simple JSON { "error": "message" } format</criterion>
+    <criterion>Text input is identified as "text" type</criterion>
+    <criterion>Audio files (.mp3, .wav, .m4a, .ogg, .flac) are identified as "audio" type</criterion>
+    <criterion>Video files (.mp4, .mov, .avi, .mkv, .webm) are identified as "video" type</criterion>
+    <criterion>Unsupported file types return appropriate error</criterion>
+    <criterion>If a file is dropped while text is present, the pasted text must be cleared</criterion>
+    <criterion>If text is typed/pasted while a file is loaded, the file must be cleared</criterion>
+    <criterion>There must be a way for the user to reset back to an empty/neutral input state</criterion>
   </acceptance_criteria>
   <complexity>M</complexity>
   <dependencies>None</dependencies>
 </task>
 
-<task id="2">
-  <name>Frontend Scaffold with Transcript Input Form</name>
-  <objective>React frontend with a textarea for transcript input and a submit button, connected to the backend /api/analyze endpoint</objective>
+<task id="7">
+  <name>Client-Side Video to Audio Extraction</name>
+  <objective>Implement client-side audio extraction from video files using the native MediaRecorder API combined with AudioContext before sending to Groq</objective>
   <files>
-    <create>
-      - app/frontend/index.html
-      - app/frontend/src/main.jsx
-      - app/frontend/src/App.jsx
+    <modify>
       - app/frontend/src/components/TranscriptForm.jsx
-      - app/frontend/vite.config.js
-      - app/frontend/package.json
-      - app/frontend/tailwind.config.js
-      - app/frontend/postcss.config.js
-      - app/frontend/index.css
-    </create>
-    <modify>
-      - None (fresh scaffold)
     </modify>
+    <create>
+      - app/frontend/src/utils/videoToAudio.js
+    </create>
   </files>
   <tests>
-    <test>Frontend dev server starts and loads App component (Vitest)</test>
-    <test>TranscriptForm renders textarea and submit button (Vitest)</test>
-    <test>Form submission triggers API call to backend (Vitest)</test>
+    <test>Video to audio extraction creates valid audio blob (Vitest, mocked)</test>
+    <test>Extraction handles common video formats (Vitest, mocked)</test>
+    <test>Extraction rejects invalid video input (Vitest, mocked)</test>
   </tests>
   <acceptance_criteria>
-    <criterion>Frontend runs on localhost:5173</criterion>
-    <criterion>TranscriptForm accepts multiline text input</criterion>
-    <criterion>Submit button triggers POST to /api/analyze</criterion>
-    <criterion>Form shows loading state during API call</criterion>
+    <criterion>Video file is converted to audio blob using MediaRecorder + AudioContext</criterion>
+    <criterion>Audio blob has correct MIME type for Groq</criterion>
+    <criterion>Extraction fails gracefully for corrupted video files</criterion>
   </acceptance_criteria>
   <complexity>M</complexity>
-  <dependencies>Task 1</dependencies>
+  <dependencies>Task 6</dependencies>
 </task>
 
-<task id="3">
-  <name>LLM Prompt Engineering for Transcript Analysis</name>
-  <objective>Create the prompt template and pipeline logic that transforms a raw transcript into the three required outputs: requirements spec, task breakdown, and SOW</objective>
+<task id="8">
+  <name>Groq API Integration for Transcription</name>
+  <objective>Implement client-side call to Groq's Whisper API for audio transcription, handling the response and errors</objective>
   <files>
-    <create>
-      - app/backend/prompts/transcript_analysis.txt
-      - app/backend/analysis_pipeline.py
-    </create>
     <modify>
-      - app/backend/app.py (add prompt loading and pipeline integration)
+      - app/frontend/src/components/TranscriptForm.jsx
     </modify>
+    <create>
+      - app/frontend/src/api/transcription.js
+    </create>
   </files>
   <tests>
-    <test>Prompt template loads correctly from file (pytest)</test>
-    <test>Analysis pipeline processes transcript and returns structured output (pytest)</test>
-    <test>Output contains all three required sections (requirements, tasks, SOW) (pytest)</test>
+    <test>Transcription API call succeeds with valid audio (Vitest, mocked)</test>
+    <test>Transcription handles Groq API errors (Vitest, mocked)</test>
+    <test>Transcription rejects unsupported audio formats (Vitest, mocked)</test>
+    <test>Transcription handles file size limit errors (Vitest, mocked)</test>
   </tests>
   <acceptance_criteria>
-    <criterion>Transcript analysis prompt is well-formed for laguna-xs-2.1:free</criterion>
-    <criterion>Pipeline returns structured JSON with requirements_spec, task_breakdown, and sow fields</criterion>
-    <criterion>Each output section is valid Markdown</criterion>
-  </acceptance_criteria>
-  <complexity>L</complexity>
-  <dependencies>Task 1</dependencies>
-</task>
-
-<task id="4">
-  <name>Output Rendering in Frontend</name>
-  <objective>Display the three AI-generated outputs (requirements spec, task breakdown, SOW) in the frontend with proper Markdown rendering and organized layout</objective>
-  <files>
-    <create>
-      - app/frontend/src/components/RequirementsSpec.jsx
-      - app/frontend/src/components/TaskBreakdown.jsx
-      - app/frontend/src/components/StatementOfWork.jsx
-      - app/frontend/src/components/OutputDisplay.jsx
-    </create>
-    <modify>
-      - app/frontend/src/App.jsx (integrate output components)
-      - app/frontend/src/components/TranscriptForm.jsx (handle response display)
-    </modify>
-  </files>
-  <tests>
-    <test>OutputDisplay renders all three output sections (Vitest)</test>
-    <test>Markdown content is properly formatted (Vitest)</test>
-    <test>Each output section has appropriate heading/label (Vitest)</test>
-  </tests>
-  <acceptance_criteria>
-    <criterion>Three distinct output sections are visible after form submission</criterion>
-    <criterion>Requirements spec displays as formatted Markdown</criterion>
-    <criterion>Task breakdown shows structured list of tasks</criterion>
-    <criterion>SOW displays as formatted document</criterion>
+    <criterion>Audio file is successfully transcribed to text</criterion>
+    <criterion>Transcription errors return user-friendly messages</criterion>
+    <criterion>Unsupported formats are rejected with clear error</criterion>
+    <criterion>File size limit errors are handled gracefully</criterion>
+    <criterion>Extracted/provided audio must be checked against 25MB ceiling client-side before any network call to Groq</criterion>
   </acceptance_criteria>
   <complexity>M</complexity>
-  <dependencies>Task 2, Task 3</dependencies>
+  <dependencies>Task 7</dependencies>
 </task>
 
-<task id="5">
-  <name>Manual Verification Checklist</name>
-  <objective>Create a documented manual verification checklist for human operators to validate the complete pipeline works end-to-end: transcript input → backend processing → frontend display of all three outputs</objective>
+<task id="9">
+  <name>Pipeline Branching Logic Integration</name>
+  <objective>Wire the three input branches (text, audio, video) into the existing state management flow so all paths converge at the reqspec extraction step</objective>
+  <files>
+    <modify>
+      - app/frontend/src/components/TranscriptForm.jsx
+    </modify>
+  </files>
+  <tests>
+    <test>Text input follows existing pipeline (Vitest)</test>
+    <test>Audio input goes through Groq transcription then existing pipeline (Vitest)</test>
+    <test>Video input goes through video-to-audio, Groq transcription, then existing pipeline (Vitest)</test>
+  </tests>
+  <acceptance_criteria>
+    <criterion>Text input produces same output as Phase 1/2 (unchanged behavior)</criterion>
+    <criterion>Audio input produces transcript via Groq, then reqspec output</criterion>
+    <criterion>Video input produces transcript via video→audio→Groq, then reqspec output</criterion>
+    <criterion>All three paths converge at the same backend /api/analyze endpoint</criterion>
+    <criterion>While transcription is in progress (video extraction and/or the Groq call), the UI must show a plain-text indication like "Transcribing..."</criterion>
+  </acceptance_criteria>
+  <complexity>M</complexity>
+  <dependencies>Task 8</dependencies>
+</task>
+
+<task id="10">
+  <name>Phase 3 Manual Verification Checklist</name>
+  <objective>Create a documented manual verification checklist for human operators to validate the complete Phase 3 pipeline works end-to-end for all three input types</objective>
   <files>
     <create>
-      - docs/verification/manual-verification.md
+      - docs/verification/manual-verification-phase3.md
     </create>
-    <modify>
-      - None (verification only)
-    </modify>
   </files>
   <tests>
     <test>Manual checklist provides clear steps for verification</test>
-    <test>Checklist includes sample transcript for testing</test>
+    <test>Checklist includes sample inputs for all three types (text, audio, video)</test>
     <test>Checklist documents expected outputs and error scenarios</test>
   </tests>
   <acceptance_criteria>
     <criterion>Manual verification checklist is complete and actionable</criterion>
-    <criterion>Sample transcript produces all three outputs without errors</criterion>
+    <criterion>Text input produces all three outputs without errors</criterion>
+    <criterion>Audio input produces all three outputs without errors</criterion>
+    <criterion>Video input produces all three outputs without errors</criterion>
     <criterion>Requirements spec contains business requirements section</criterion>
     <criterion>Task breakdown contains numbered task list</criterion>
     <criterion>SOW contains scope, deliverables, and timeline sections</criterion>
-    <criterion>Invalid input returns proper error message</criterion>
+    <criterion>Invalid/unsupported inputs return proper error messages</criterion>
   </acceptance_criteria>
   <complexity>S</complexity>
-  <dependencies>Task 4</dependencies>
+  <dependencies>Task 9</dependencies>
 </task>
 
 ---
@@ -184,13 +171,11 @@ Build the Core Pipeline MVP for ABAA (AI Business Analyst Assistant). This Phase
 
 After all tasks complete:
 
-- [ ] All unit tests pass (Vitest for frontend)
-- [ ] All backend tests pass (pytest)
-- [ ] Backend API endpoints respond correctly
+- [ ] All unit tests pass (Vitest)
 - [ ] Frontend components render properly
+- [ ] All three input branches work correctly
 - [ ] Manual verification checklist completed and validated
 - [ ] Code review completed
-- [ ] Documentation updated (README.md)
 - [ ] ACTIVE_CONTEXT.md updated
 - [ ] Acceptance criteria verified
 
@@ -200,21 +185,19 @@ After all tasks complete:
 
 | Risk   | Likelihood | Impact  | Mitigation |
 |--------|------------|---------|------------|
-| OpenRouter free-tier rate limits | M | H | Implement basic rate limiting, add user guidance for API key setup, cache responses for identical transcripts |
-| laguna-xs-2.1:free output reliability | M | H | Add response validation, implement retry logic with exponential backoff, provide clear error messages when output is malformed |
-| Model may not produce structured output consistently | M | M | Use explicit prompt formatting with clear section delimiters, validate output structure before returning, provide fallback parsing |
-| No database means no persistence | L | M | Document that transcripts and outputs are ephemeral, consider localStorage for session persistence if needed |
-| Plain JavaScript may lack type safety | L | M | Add runtime validation for API responses, use JSDoc for basic type documentation |
-| Free-tier model may be slower | M | L | Add loading states, optimize prompt length, consider streaming if supported |
+| Groq free-tier rate limits (2,000 req/day) | M | H | Add user guidance for API key setup, implement client-side caching for identical files |
+| Browser API limitations for video-to-audio extraction | M | M | Use MediaRecorder API with fallback, test across browsers |
+| Vercel 4.5MB request body limit | L | M | Validate file size client-side before processing, show clear error for oversized files |
+| CORS issues with Groq API | M | M | Verify CORS headers, use fetch with proper options |
+| Unsupported audio/video formats | M | L | Document supported formats, validate MIME types client-side |
 
 ---
 
 ## Open Items
 
-- [ ] OpenRouter API key setup instructions for users
-- [ ] Error message wording for rate limit scenarios
-- [ ] Whether to add localStorage persistence for transcripts (currently out of scope)
-- [ ] Prompt template refinement based on initial test runs
+- [ ] Groq API key setup instructions for users
+- [ ] Supported file format documentation
+- [ ] File size limit guidance for users
 
 ---
 
@@ -222,8 +205,8 @@ After all tasks complete:
 
 | Role        | Name              | Date       | Status   |
 | ----------- | ----------------- | ---------- | -------- |
-| Architect   | Benyamin Castillo | 2026-08-12 | Approved |
-| Stakeholder | Benyamin Castillo | 2026-08-12 | Approved |
+| Architect   | Benyamin Castillo | 2026-08-17 | Pending |
+| Stakeholder | Benyamin Castillo | 2026-08-17 | Pending |
 
 ---
 

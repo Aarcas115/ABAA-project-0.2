@@ -1,12 +1,10 @@
-# Task Checklist: Task 5 - Manual Verification Checklist
+# Task Checklist: Task 6 - Client-Side File Type Detection
 
 > **Plan Reference:** docs/planning/implementation_plan.md
-> **Task ID:** 5
-> **Last Updated:** 2026-08-22
-> **Current Role:** Developer
-> **Mode:** EXECUTION
-
-PHASE 1 STATUS: COMPLETE (Task 5.10 deferred to final project documentation pass).
+> **Task ID:** 6
+> **Last Updated:** 2026-08-25
+> **Current Role:** Architect
+> **Mode:** PLANNING
 
 ---
 
@@ -14,168 +12,142 @@ PHASE 1 STATUS: COMPLETE (Task 5.10 deferred to final project documentation pass
 
 | Status | Count |
 |--------|-------|
-| Completed | 11 |
+| Completed | 0 |
 | In Progress | 0 |
-| Pending | 1 |
+| Pending | 11 |
 | Blocked | 0 |
 
 ---
 
 ## Tasks
 
-### Task 5.0: Decide structure/format of the manual verification doc
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Determine overall document structure (Prerequisites, Sample Transcript, Verification Steps, Expected Outputs, Error Scenarios)
-- [x] Define heading hierarchy and section order
-- [x] Select appropriate Markdown formatting conventions
-- [x] Document the chosen structure in Notes
-
-**Notes:** Structure locked in planning discussion: 5-section order (Prerequisites, Sample Transcript, Verification Steps, Expected Outputs, Error Scenarios), checkbox list for steps, table for expected outputs, plain sub-bullets for error scenarios.
-
----
-
-### Task 5.1: Draft "Prerequisites" section
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] List required environment variables (OPENROUTER_API_KEY)
-- [x] Document server startup commands and ports (frontend: 5173, backend: 8000)
-- [x] Specify OpenRouter API key configuration steps
-- [x] Verify all prerequisites are testable
-
-**Notes:** Created Prerequisites section with bullet list covering OPENROUTER_API_KEY, server startup commands, and quota verification.
-
----
-
-### Task 5.2: Draft/include a sample client-meeting transcript fixture
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create a realistic client meeting transcript
-- [x] Include typical business requirements discussion points
-- [x] Ensure transcript is long enough to generate meaningful outputs
-- [x] Format transcript for easy copy-paste into the form
-
-**Notes:** Created sample transcript with TechFlow Solutions discussing customer portal requirements, including order tracking, profile management, returns portal, timeline (Oct 15 MVP), and budget ($25,000, $100/hr rate).
-
----
-
-### Task 5.3: Draft step-by-step verification steps
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Document the transcript paste → submit → observe workflow
-- [x] Include screenshots or expected UI states at each step
-- [x] Specify how to verify loading states
-- [x] Define success criteria for each step
-
-**Notes:** Created Verification Steps section as checkbox list covering frontend access, form interaction, submission, loading state, output rendering, and error verification.
-
----
-
-### Task 5.4: Draft "Expected Outputs" section
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Create subsection for Requirements Spec acceptance criterion
-- [x] Create subsection for Task Breakdown acceptance criterion
-- [x] Create subsection for SOW acceptance criterion
-- [x] Document what each output should contain
-
-**Notes:** Created Expected Outputs section as Markdown table with columns: Output, Must Contain, Acceptance Criterion. Populated with exact acceptance criteria from implementation_plan.md Task 5.
-
----
-
-### Task 5.5: Draft "Error Scenarios" section
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Document empty transcript error handling
-- [x] Document malformed input error handling
-- [x] Document backend unreachable error handling
-- [x] Verify all errors follow { "error": "message" } format
-
-**Notes:** Created Error Scenarios section with three ### sub-sections: Empty Transcript Submission, Whitespace-Only Input, Backend Unreachable. Also documented backend validation errors (400, 429, 500) with exact response formats from app.py.
-
----
-
-### Task 5.6: Create docs/verification/manual-verification.md
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Combine sections 5.1-5.5 into single document
-- [x] Apply consistent formatting and styling
-- [x] Verify document structure matches 5.0 decisions
-- [x] Ensure document is ready for manual testing
-
-**Notes:** Created docs/verification/manual-verification.md with all five sections properly formatted. Document includes realistic sample transcript, checkbox verification steps, expected outputs table, and detailed error scenarios with exact response formats.
-
----
-
-### Task 5.7: Manually run sample transcript through pipeline
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Start both frontend and backend servers
-- [x] Paste sample transcript into form
-- [x] Submit and observe all three outputs generate
-- [x] Confirm no errors occur during processing
-
-**Notes:**
-
----
-
-### Task 5.8: Manually run invalid-input case through pipeline
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Test empty transcript submission
-- [x] Test malformed input submission
-- [x] Test backend unreachable scenario
-- [x] Verify proper error messages are returned
-
-**Notes:**
-
----
-
-### Task 5.9: Cross-check finished doc against acceptance criteria
-- **Status:** [x] Completed
-
-**Subtasks:**
-- [x] Verify Requirements Spec contains business requirements section
-- [x] Verify Task Breakdown contains numbered task list
-- [x] Verify SOW contains scope, deliverables, and timeline sections
-- [x] Document any discrepancies found
-
-**Notes:** Acceptance criteria cross-checked manually by project owner against manual-verification.md Dev Notes rather than via Aider automated review; all 5 criteria from implementation_plan.md Task 5 confirmed met based on the completed manual test session (Tasks 5.7-5.8).
-
----
-
-### Task 5.10: Documentation pass - update README.md
+### Task 6.0: Decide file detection approach and structure
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Review current README.md content
-- [ ] Add completion notes for Task 4
-- [ ] Add completion notes for Task 5
-- [ ] Verify documentation is accurate and complete
+- [ ] Determine detection method (MIME type check, file extension check, or both)
+- [ ] Define how "text" input is distinguished as default/fallback case
+- [ ] Document the chosen approach in Notes
 
-**Notes:** Deferred to end of project. README will be written once all 5 phases of ABAA are complete, not after Phase 1 alone, to avoid a stale README needing rewrites after every phase.
+**Notes:** Will use MIME type check as primary method with file extension as fallback. Text input is the default when no file is provided.
 
 ---
 
-### Task 5.11: Update docs/context/ACTIVE_CONTEXT.md for Phase 1 completion
-- **Status:** [x] Completed
+### Task 6.1: Draft/implement fileDetection.js utility
+- **Status:** [ ] Pending
 
 **Subtasks:**
-- [x] Mark Phase 1 (Core Pipeline MVP) as complete
-- [x] Update session metadata and role
-- [x] Document final state of all tasks
-- [x] Verify context is accurate for next phase
+- [ ] Create app/frontend/src/utils/fileDetection.js
+- [ ] Implement detectFileType function
+- [ ] Define supported audio MIME types and extensions
+- [ ] Define supported video MIME types and extensions
+- [ ] Add clear documentation for the utility
 
-**Notes:** Phase 1 closeout recorded in ACTIVE_CONTEXT.md; Task 5.10 explicitly deferred, not completed, as part of this closeout.
+**Notes:** Utility will export a detectFileType function that returns 'text', 'audio', 'video', or throws an error for unsupported types.
+
+---
+
+### Task 6.2: Wire detection into TranscriptForm.jsx
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Import fileDetection utility in TranscriptForm.jsx
+- [ ] Add file input handler to detect file type on drop/select
+- [ ] Update state management to track input type (text/audio/video)
+- [ ] Clear transcript when file is dropped (mutual exclusivity)
+- [ ] Clear file when text is typed (mutual exclusivity)
+
+**Notes:** TranscriptForm will manage three states: text-only, audio-file, video-file. Switching between them clears the other.
+
+---
+
+### Task 6.3: Implement audio type detection
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Verify audio files (.mp3, .wav, .m4a, .ogg, .flac) are identified as "audio" type
+- [ ] Test with various audio file formats
+- [ ] Document supported audio formats
+
+**Notes:** Audio detection must handle common formats: mp3, wav, m4a, ogg, flac.
+
+---
+
+### Task 6.4: Implement video type detection
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Verify video files (.mp4, .mov, .avi, .mkv, .webm) are identified as "video" type
+- [ ] Test with various video file formats
+- [ ] Document supported video formats
+
+**Notes:** Video detection must handle common formats: mp4, mov, avi, mkv, webm.
+
+---
+
+### Task 6.5: Implement unsupported type rejection
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Verify unsupported file types return appropriate error
+- [ ] Display user-friendly error message for rejected files
+- [ ] Prevent submission of unsupported file types
+
+**Notes:** Unsupported files should be rejected with clear error message before any processing.
+
+---
+
+### Task 6.6: Implement mutual exclusivity/clear-on-switch behavior
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Verify text input is cleared when file is dropped
+- [ ] Verify file is cleared when text is typed/pasted
+- [ ] Test edge cases (rapid switching, empty states)
+
+**Notes:** Only one input type can be active at a time. Switching clears the other.
+
+---
+
+### Task 6.7: Implement reset control
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Add UI control to reset back to empty/neutral state
+- [ ] Verify reset clears both text and file inputs
+- [ ] Test reset functionality
+
+**Notes:** Users need a way to clear all input and start fresh.
+
+---
+
+### Task 6.8: Write Vitest tests for file detection
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Test file detection correctly identifies text input
+- [ ] Test file detection correctly identifies audio file types
+- [ ] Test file detection correctly identifies video file types
+- [ ] Test file detection rejects unsupported file types
+
+**Notes:** Tests will be in app/frontend/src/utils/fileDetection.test.js
+
+---
+
+### Task 6.9: Cross-check finished work against acceptance criteria
+- **Status:** [ ] Pending
+
+**Subtasks:**
+- [ ] Verify text input is identified as "text" type
+- [ ] Verify audio files are identified as "audio" type
+- [ ] Verify video files are identified as "video" type
+- [ ] Verify unsupported file types return appropriate error
+- [ ] Verify text input is cleared when file is dropped
+- [ ] Verify file is cleared when text is typed/pasted
+- [ ] Verify there is a way to reset to empty state
+- [ ] Document any discrepancies found
+
+**Notes:** All acceptance criteria from implementation_plan.md Task 6 must be verified before marking complete.
 
 ---
 
@@ -187,7 +159,8 @@ None
 
 ## Notes
 
-- Task 5 depends on Task 4 being fully complete (including 4.10-4.16)
+- Task 6 is the first task of Phase 3 (Video/Audio-to-Transcript Pipeline)
 - This checklist was authored by the Architect during the PLANNING phase
 - All subtasks are currently pending and await Developer-mode execution
-- The manual verification document will be created in docs/verification/manual-verification.md
+- Task 7 (Client-Side Video to Audio Extraction) depends on Task 6 completion
+- Phase 1 and Phase 2 are both complete and deployed to Vercel

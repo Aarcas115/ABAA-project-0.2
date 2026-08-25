@@ -56,20 +56,46 @@ ABAA (AI Business Analyst Assistant) is a web app that automates a Business Anal
 
 ## Deployment
 
-- **Platform**: Render
-- **CI/CD**: None yet — manual deploy via Render for Phase 1, revisit in Phase 2
-- **Environment Strategy**: Single environment (local dev + Render production), no staging tier yet
+- **Platform**: Vercel
+- **CI/CD**: None yet — manual deploy via Vercel for Phase 1, revisit in Phase 2
+- **Environment Strategy**: Single environment (local dev + Vercel production), no staging tier yet
 
 ---
 
 ## Stack & Hosting
 
 - **Frontend**: React + Vite, plain JavaScript (not TypeScript), Tailwind CSS 3
-- **Backend**: Python
+- **Backend**: FastAPI (Python 3.12)
 - **LLM Provider**: OpenRouter free tier, model poolside/laguna-xs-2.1:free
 - NOTE: (corrected 2026-08-16 — "openrouter/" prefix is not part of the model ID)
-- **Hosting**: Render — frontend static site and backend web service deployed as two separate services, no local dev process required for the deployed app
+- **Hosting**: Vercel — frontend deployed as Vite static site (abaa-project-02.vercel.app), backend deployed as Python serverless function via @vercel/python (abba-backend.vercel.app). Two separate Vercel projects.
 - **Constraint**: Every tool/service used must be free (hard constraint, no paid tiers anywhere in the stack)
+
+---
+
+## Phase 3: Video/Audio-to-Transcript Pipeline
+
+### Scope
+
+Users can provide a client meeting transcript as plain text (existing Phase 1/2 behavior, unchanged), OR drop in a single video file, OR drop in a single audio file, into the SAME existing "Client Meeting Transcript" input area. Only one input type is used at a time (mutually exclusive) — the input area is repurposed, not replaced or duplicated.
+
+### Architecture Decisions
+
+- **Transcription Service**: Groq's Whisper API for transcription, NOT client-side Transformers.js/WASM. Rationale: ~228x real-time speed, 2,000 requests/day free tier, no credit card required, OpenAI-compatible API.
+- **API Key Storage**: Groq API key stored as client-side VITE_ environment variable (e.g. VITE_GROQ_API_KEY). This is an accepted, known risk for this project's demo scope — audio is sent directly from browser to Groq's API, bypassing the Vercel backend entirely.
+- **Vercel Serverless Constraint**: Hard 4.5MB request body limit. Audio/video files must be handled client-side and sent directly to Groq.
+
+### Pipeline Branching Logic
+
+- **Plain text input** → follows existing Phase 1/2 flow unchanged (text goes straight to reqspec extraction).
+- **Audio file input** → extract transcript from audio via Groq → pass transcript into existing reqspec extraction step.
+- **Video file input** → extract audio from video (client-side) → extract transcript from that audio via Groq → pass transcript into existing reqspec extraction step.
+
+### Out of Scope (Phase 4)
+
+- UI/UX changes: new form fields (Client/Company, Meeting/Project Title, Date & Time, Add Participant, Meeting Reason)
+- Redesigned loading/processing state
+- Visual restyling of the input area
 
 ---
 

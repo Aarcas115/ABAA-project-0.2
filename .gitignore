@@ -9,3 +9,6 @@ venv/
 .env
 .env.local
 .env.production.local
+
+.vercel
+.env*
