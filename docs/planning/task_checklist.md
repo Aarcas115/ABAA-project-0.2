@@ -1,10 +1,10 @@
-# Task Checklist: Task 6 - Client-Side File Type Detection
+# Task Checklist: Task 8 - Groq API Integration for Transcription
 
 > **Plan Reference:** docs/planning/implementation_plan.md
-> **Task ID:** 6
-> **Last Updated:** 2026-08-25
-> **Current Role:** Architect
-> **Mode:** PLANNING
+> **Task ID:** 8
+> **Last Updated:** 2026-08-29
+> **Current Role:** Developer
+> **Mode:** EXECUTION
 
 ---
 
@@ -12,142 +12,136 @@
 
 | Status | Count |
 |--------|-------|
-| Completed | 0 |
-| In Progress | 0 |
-| Pending | 11 |
+| Completed | 4 |
+| In Progress | 1 |
+| Pending | 1 |
 | Blocked | 0 |
 
 ---
 
 ## Tasks
 
-### Task 6.0: Decide file detection approach and structure
-- **Status:** [ ] Pending
+### Task 8.0: Decide Groq transcription API integration approach
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Determine detection method (MIME type check, file extension check, or both)
-- [ ] Define how "text" input is distinguished as default/fallback case
-- [ ] Document the chosen approach in Notes
+- [x] Determine Groq Whisper API endpoint and authentication method
+- [x] Define request format (multipart/form-data with audio blob)
+- [x] Select appropriate model for transcription
+- [x] Design response parsing strategy
+- [x] Determine where the 25MB pre-flight size check lives in the call flow
 
-**Notes:** Will use MIME type check as primary method with file extension as fallback. Text input is the default when no file is provided.
+**Notes:** Design decisions locked in:
+- Endpoint: https://api.groq.com/openai/v1/audio/transcriptions
+- Model: whisper-large-v3-turbo
+- Auth: Bearer token via Authorization header with VITE_GROQ_API_KEY
+- Request format: multipart/form-data with FormData (file, model, response_format fields)
+- Response parsing: { text: "..." } on success, normalized Error on failure
+- 25MB pre-flight size check implemented inside transcription.js function, before fetch call
 
 ---
 
-### Task 6.1: Draft/implement fileDetection.js utility
-- **Status:** [ ] Pending
+### Task 8.1: Create app/frontend/src/api/transcription.js with transcription call function
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Create app/frontend/src/utils/fileDetection.js
-- [ ] Implement detectFileType function
-- [ ] Define supported audio MIME types and extensions
-- [ ] Define supported video MIME types and extensions
-- [ ] Add clear documentation for the utility
+- [x] Create transcription.js file in app/frontend/src/api/
+- [x] Implement function to call Groq Whisper API
+- [x] Handle request formatting (multipart/form-data)
+- [x] Add proper error handling for API responses
+- [x] Document the function and its parameters
 
-**Notes:** Utility will export a detectFileType function that returns 'text', 'audio', 'video', or throws an error for unsupported types.
+**Notes:** Created transcription.js with:
+- JSDoc header documenting all design decisions
+- Exported transcribeAudio(audioBlob) function
+- Pre-flight 25MB size check before any network call
+- FormData payload construction with file, model, response_format
+- Fetch POST request with Bearer token authorization
+- Success returns transcribed text string
+- Errors throw normalized Error objects with clear messages
+- Network errors handled with user-friendly messages
+- Post-review fix: removed unreachable error-branch dead code and added filename fallback for FormData blob uploads (required for video-extracted audio, which lacks a filename).
 
 ---
 
-### Task 6.2: Wire detection into TranscriptForm.jsx
-- **Status:** [ ] Pending
+### Task 8.2: Wire transcription.js into TranscriptForm.jsx
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Import fileDetection utility in TranscriptForm.jsx
-- [ ] Add file input handler to detect file type on drop/select
-- [ ] Update state management to track input type (text/audio/video)
-- [ ] Clear transcript when file is dropped (mutual exclusivity)
-- [ ] Clear file when text is typed (mutual exclusivity)
+- [x] Import transcription function in TranscriptForm.jsx
+- [x] Call transcription function for audio input
+- [x] Call transcription function for video input after videoToAudio extraction (reference Task 7's extractedAudio state)
+- [x] Update state management for transcription progress
+- [x] Handle transcription results appropriately
 
-**Notes:** TranscriptForm will manage three states: text-only, audio-file, video-file. Switching between them clears the other.
+**Notes:** Wired transcription.js into TranscriptForm.jsx:
+- Added import for transcribeAudio from '../api/transcription'
+- Added new isTranscribing state (separate from isExtracting for video extraction phase)
+- Video branch: after videoToAudio succeeds, immediately calls transcribeAudio on the extracted blob, then onResult({ transcript: <result text> })
+- Audio branch: replaced pass-through with actual transcribeAudio call, onResult({ transcript: <result text> })
+- Both branches use try/catch/finally to manage isTranscribing state and surface errors via setError
+- Removed stale "(Task 8)" comment from audio branch
+- All three paths now converge on unified onResult({ transcript }) shape
 
 ---
 
-### Task 6.3: Implement audio type detection
-- **Status:** [ ] Pending
+### Task 8.3: Implement error handling
+- **Status:** [x] Completed
 
 **Subtasks:**
-- [ ] Verify audio files (.mp3, .wav, .m4a, .ogg, .flac) are identified as "audio" type
-- [ ] Test with various audio file formats
-- [ ] Document supported audio formats
+- [x] Handle Groq API errors (401, 429, 500, etc.)
+- [x] Implement unsupported audio format rejection
+- [x] Handle file size limit errors
+- [x] Implement 25MB client-side ceiling check before any network call (explicitly close out the item deferred from Task 7.3)
+- [x] Display user-friendly error messages
 
-**Notes:** Audio detection must handle common formats: mp3, wav, m4a, ogg, flac.
+**Notes:** Error handling implemented:
+- Reused existing error state and red-banner UI for all error display
+- Video extraction failures: setError(err.message) from videoToAudio catch block
+- Transcription failures: setError(err.message) from transcribeAudio catch block
+- Groq API errors: transcribeAudio throws normalized Error with clear messages
+- Unsupported format rejection: detectFileType throws, caught in handleFileChange, setError(err.message)
+- Size limit errors: handled in handleFileChange for audio files, setError('File size exceeds 25MB limit')
+- No duplicate client-side size check added in TranscriptForm - transcribeAudio already enforces 25MB ceiling before network call for both direct audio and video-extracted audio paths
 
 ---
 
-### Task 6.4: Implement video type detection
-- **Status:** [ ] Pending
+### Task 8.4: Write Vitest tests (mocked)
+- **Status:** [ ] In Progress
 
 **Subtasks:**
-- [ ] Verify video files (.mp4, .mov, .avi, .mkv, .webm) are identified as "video" type
-- [ ] Test with various video file formats
-- [ ] Document supported video formats
+- [x] Test successful transcription
+- [x] Test Groq API error handling
+- [x] Test unsupported format rejection
+- [x] Test file size limit handling
+- [x] Test video extraction + transcription end-to-end
+- [x] Test extraction failure short-circuit
+- [x] Test transcription failure after extraction
+- [x] Test all three paths converge on same shape
+- [x] Test Reset clears error and restores button state
 
-**Notes:** Video detection must handle common formats: mp4, mov, avi, mkv, webm.
+**Notes:** Fixed three issues in TranscriptForm.test.jsx:
+1. **Mock leakage fix:** Replaced all `vi.clearAllMocks()` calls in beforeEach/afterEach hooks with `vi.resetAllMocks()` across all describe blocks. Root cause: `clearAllMocks()` does not clear queued `mockResolvedValueOnce`/`mockRejectedValueOnce`/`mockReturnValueOnce` values that were never consumed, causing leftover mock behavior from one test to leak into the next.
+2. **Test 4 relocation:** Moved the file size limit error test from the Audio Path block to the Video Path block, renaming it to "4b. File size limit error on video-extracted audio". Rewrote to mock `videoToAudio.mockResolvedValueOnce(smallBlob)` then `transcribeAudio.mockRejectedValueOnce(sizeError)`, since the audio-file-upload path is already gated by `handleFileChange`'s size check and this is the only path where `transcribeAudio`'s internal size check is reachable.
+3. **Test 8 assertion fix:** Removed unused `fetch.mockResolvedValueOnce` and `mockResponse` from the text-path portion of the convergence test, and changed the assertion from expecting `{ requirements_spec, task_breakdown, sow }` to expecting `{ transcript: transcriptText }`, matching the actual text-path behavior of the component.
+4. **Test 8 stale DOM reference fix:** In the video-path section of Test 8, re-queried the file input fresh after cleanup() + render() instead of reusing the stale fileInput reference from the audio-path section.
+5. **Test 8 mock leakage fix:** Changed inline `vi.clearAllMocks()` to `vi.resetAllMocks()` in the video-path section of Test 8 for consistency with the beforeEach/afterEach hooks.
+
+**Outstanding Issue:** 4 pre-existing, unrelated test failures in the top-level 'TranscriptForm' describe block (tests for fetch/'/api/analyze') remain unresolved. These tests are explicitly out of scope for this task and require a decision on where /api/analyze logic now lives.
 
 ---
 
-### Task 6.5: Implement unsupported type rejection
+### Task 8.5: Cross-check finished work against acceptance criteria
 - **Status:** [ ] Pending
 
 **Subtasks:**
-- [ ] Verify unsupported file types return appropriate error
-- [ ] Display user-friendly error message for rejected files
-- [ ] Prevent submission of unsupported file types
+- [ ] Verify audio file is successfully transcribed to text
+- [ ] Verify transcription errors return user-friendly messages
+- [ ] Verify unsupported formats are rejected with clear error
+- [ ] Verify file size limit errors are handled gracefully
+- [ ] Verify 25MB client-side audio-blob size check against Groq's ceiling before any network call
 
-**Notes:** Unsupported files should be rejected with clear error message before any processing.
-
----
-
-### Task 6.6: Implement mutual exclusivity/clear-on-switch behavior
-- **Status:** [ ] Pending
-
-**Subtasks:**
-- [ ] Verify text input is cleared when file is dropped
-- [ ] Verify file is cleared when text is typed/pasted
-- [ ] Test edge cases (rapid switching, empty states)
-
-**Notes:** Only one input type can be active at a time. Switching clears the other.
-
----
-
-### Task 6.7: Implement reset control
-- **Status:** [ ] Pending
-
-**Subtasks:**
-- [ ] Add UI control to reset back to empty/neutral state
-- [ ] Verify reset clears both text and file inputs
-- [ ] Test reset functionality
-
-**Notes:** Users need a way to clear all input and start fresh.
-
----
-
-### Task 6.8: Write Vitest tests for file detection
-- **Status:** [ ] Pending
-
-**Subtasks:**
-- [ ] Test file detection correctly identifies text input
-- [ ] Test file detection correctly identifies audio file types
-- [ ] Test file detection correctly identifies video file types
-- [ ] Test file detection rejects unsupported file types
-
-**Notes:** Tests will be in app/frontend/src/utils/fileDetection.test.js
-
----
-
-### Task 6.9: Cross-check finished work against acceptance criteria
-- **Status:** [ ] Pending
-
-**Subtasks:**
-- [ ] Verify text input is identified as "text" type
-- [ ] Verify audio files are identified as "audio" type
-- [ ] Verify video files are identified as "video" type
-- [ ] Verify unsupported file types return appropriate error
-- [ ] Verify text input is cleared when file is dropped
-- [ ] Verify file is cleared when text is typed/pasted
-- [ ] Verify there is a way to reset to empty state
-- [ ] Document any discrepancies found
-
-**Notes:** All acceptance criteria from implementation_plan.md Task 6 must be verified before marking complete.
+**Notes:** Not yet started.
 
 ---
 
@@ -159,8 +153,7 @@ None
 
 ## Notes
 
-- Task 6 is the first task of Phase 3 (Video/Audio-to-Transcript Pipeline)
-- This checklist was authored by the Architect during the PLANNING phase
-- All subtasks are currently pending and await Developer-mode execution
-- Task 7 (Client-Side Video to Audio Extraction) depends on Task 6 completion
-- Phase 1 and Phase 2 are both complete and deployed to Vercel
+- Task 8 planning phase complete. All subtasks identified and documented.
+- The 25MB audio-blob size validation against Groq's ceiling, deferred from Task 7.3, is explicitly included in Task 8.3 and 8.5.
+- Task 8.4 fixes applied: mock-leakage via resetAllMocks, Test 4 relocation to video path, Test 8 assertion correction, Test 8 stale DOM reference fix, Test 8 inline mock reset fix.
+- 4 legacy tests in top-level 'TranscriptForm' block remain unresolved pending architectural decision.
