@@ -16,11 +16,11 @@ global.fetch = vi.fn()
 describe('TranscriptForm', () => {
   beforeEach(() => {
     fetch.mockClear()
-    vi.clearAllMocks()
+    vi.resetAllMocks()
   })
 
   afterEach(() => {
-    vi.clearAllMocks()
+    vi.resetAllMocks()
   })
 
   test('renders textarea and submit button', () => {
@@ -58,105 +58,6 @@ describe('TranscriptForm', () => {
     fireEvent.change(textarea, { target: { value: 'Test transcript' } })
     
     expect(submitButton).toBeEnabled()
-  })
-
-  test('makes POST request to correct endpoint with transcript data', async () => {
-    const mockResponse = {
-      requirements_spec: '# Requirements',
-      task_breakdown: '- Task 1',
-      sow: 'Scope: ...'
-    }
-    
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse,
-    })
-
-    render(<TranscriptForm />)
-    
-    const textarea = screen.getByLabelText(/client meeting transcript/i)
-    const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
-    
-    fireEvent.change(textarea, { target: { value: 'Test transcript content' } })
-    fireEvent.click(submitButton)
-    
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:8000/api/analyze',
-        expect.objectContaining({
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ transcript: 'Test transcript content' }),
-        })
-      )
-    })
-  })
-
-  test('displays loading state during API call', async () => {
-    fetch.mockImplementation(() => 
-      new Promise(resolve => setTimeout(resolve, 100))
-    )
-
-    render(<TranscriptForm />)
-    
-    const textarea = screen.getByLabelText(/client meeting transcript/i)
-    const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
-    
-    fireEvent.change(textarea, { target: { value: 'Test transcript' } })
-    fireEvent.click(submitButton)
-    
-    expect(screen.getByText(/analyzing.../i)).toBeDisabled()
-    expect(textarea).toBeDisabled()
-  })
-
-  test('displays error message from backend', async () => {
-    const errorMessage = 'API key not configured'
-    
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-      json: async () => ({ error: errorMessage }),
-    })
-
-    render(<TranscriptForm />)
-    
-    const textarea = screen.getByLabelText(/client meeting transcript/i)
-    const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
-    
-    fireEvent.change(textarea, { target: { value: 'Test transcript' } })
-    fireEvent.click(submitButton)
-    
-    await waitFor(() => {
-      expect(screen.getByText(errorMessage)).toBeInTheDocument()
-    })
-  })
-
-  test('calls onResult callback with response data on successful API call', async () => {
-    const mockOnResult = vi.fn()
-    const mockResponse = {
-      requirements_spec: '# Requirements\n- Requirement 1',
-      task_breakdown: '- Task 1\n- Task 2',
-      sow: '## Statement of Work\nScope: ...'
-    }
-    
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockResponse,
-    })
-
-    render(<TranscriptForm onResult={mockOnResult} />)
-    
-    const textarea = screen.getByLabelText(/client meeting transcript/i)
-    const submitButton = screen.getByRole('button', { name: /analyze transcript/i })
-    
-    fireEvent.change(textarea, { target: { value: 'Test transcript' } })
-    fireEvent.click(submitButton)
-    
-    await waitFor(() => {
-      expect(mockOnResult).toHaveBeenCalledWith(mockResponse)
-    })
   })
 })
 

@@ -1,10 +1,11 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { videoToAudio } from './videoToAudio.js'
+import { vi } from 'vitest'
+import { videoToAudio } from './videoToAudio'
 
-// Mock AudioContext
+// Mock MediaRecorder, AudioContext, and related browser APIs
 class MockAudioContext {
   constructor() {
     this.state = 'running'
+    this._gainNodes = []
   }
 
   createMediaElementSource(videoElement) {
@@ -22,12 +23,21 @@ class MockAudioContext {
     }
   }
 
+  createGain() {
+    const gainNode = {
+      gain: { value: 1 },
+      connect: vi.fn(),
+      disconnect: vi.fn()
+    }
+    this._gainNodes.push(gainNode)
+    return gainNode
+  }
+
   close() {
     this.state = 'closed'
   }
 }
 
-// Mock MediaRecorder
 class MockMediaRecorder {
   constructor(stream, options) {
     this.stream = stream
@@ -76,188 +86,200 @@ class MockMediaRecorder {
   }
 }
 
+// Mock global browser APIs
+global.AudioContext = MockAudioContext
+global.MediaRecorder = MockMediaRecorder
+global.MediaRecorder.isTypeSupported = vi.fn().mockReturnValue(true)
+
 describe('videoToAudio', () => {
-  let originalAudioContext
-  let originalMediaRecorder
-  let originalURL
-  let capturedVideoElement
-  let createElementSpy
+  let mockVideoElement
+  let mockUrl
+  let eventListeners
+  let mockAudioContext
 
   beforeEach(() => {
-    // Store original implementations
-    originalAudioContext = window.AudioContext
-    originalMediaRecorder = window.MediaRecorder
-    originalURL = window.URL
-
-    // Set up mocks
-    window.AudioContext = MockAudioContext
-    window.webkitAudioContext = MockAudioContext
-    window.MediaRecorder = MockMediaRecorder
-    window.MediaRecorder.isTypeSupported = vi.fn(() => true)
-    window.URL.createObjectURL = vi.fn(() => 'blob:mock-video-url')
-    window.URL.revokeObjectURL = vi.fn()
-
-    // Capture the real original implementation BEFORE installing the spy
-    const originalCreateElement = document.createElement.bind(document)
-    
-    // Spy on document.createElement to capture the video element
-    createElementSpy = vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
-      const element = originalCreateElement(tagName)
-      if (tagName === 'video') {
-        capturedVideoElement = element
-        // Override play method since jsdom's HTMLVideoElement doesn't implement it
-        capturedVideoElement.play = vi.fn(() => Promise.resolve())
+    eventListeners = {}
+    mockAudioContext = new MockAudioContext()
+    mockVideoElement = {
+      autoplay: false,
+      muted: false,
+      playsInline: true,
+      src: '',
+      duration: 0,
+      error: null,
+      addEventListener: vi.fn((event, cb) => {
+        if (!eventListeners[event]) eventListeners[event] = []
+        eventListeners[event].push(cb)
+      }),
+      removeEventListener: vi.fn(),
+      play: vi.fn().mockResolvedValue(undefined),
+      set src(url) {
+        mockUrl = url
       }
-      return element
+    }
+
+    // Mock document.createElement to return our mock video element
+    vi.spyOn(document, 'createElement').mockImplementation((tag) => {
+      if (tag === 'video') return mockVideoElement
+      return document.createElement(tag)
     })
+
+    // Mock URL API
+    global.URL.createObjectURL = vi.fn().mockReturnValue('blob:mock-url')
+    global.URL.revokeObjectURL = vi.fn()
+
+    // Mock Event constructor
+    global.Event = vi.fn().mockImplementation((type) => ({ type }))
   })
 
   afterEach(() => {
-    // Restore original implementations
-    window.AudioContext = originalAudioContext
-    window.webkitAudioContext = originalAudioContext
-    window.MediaRecorder = originalMediaRecorder
-    window.URL = originalURL
-    createElementSpy.mockRestore()
-    vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
-  describe('Video to audio extraction creates valid audio blob', () => {
-    it('should resolve with a Blob of correct MIME type for audio/webm', async () => {
-      // Override isTypeSupported to only accept plain 'audio/webm', forcing the fallback path
-      window.MediaRecorder.isTypeSupported = vi.fn((mimeType) => mimeType === 'audio/webm')
-
-      const videoFile = new File(['mock video content'], 'test-video.mp4', { type: 'video/mp4' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      // Simulate loadedmetadata event
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-
-      // Wait a tick for async operations
-      await new Promise(resolve => setTimeout(resolve, 0))
-
-      // Simulate ended event
-      capturedVideoElement.dispatchEvent(new Event('ended'))
-
-      // Wait for the promise to resolve
-      const audioBlob = await resultPromise
-
-      expect(audioBlob).toBeInstanceOf(Blob)
-      expect(audioBlob.type).toBe('audio/webm')
-    })
-
-    it('should resolve with a Blob of correct MIME type for audio/webm;codecs=opus when supported', async () => {
-      // Mock isTypeSupported to return true for opus codec
-      window.MediaRecorder.isTypeSupported = vi.fn((mimeType) => {
-        return mimeType === 'audio/webm;codecs=opus'
-      })
-
-      const videoFile = new File(['mock video content'], 'test-video.mp4', { type: 'video/mp4' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      // Simulate loadedmetadata event
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-
-      // Wait a tick for async operations
-      await new Promise(resolve => setTimeout(resolve, 0))
-
-      // Simulate ended event
-      capturedVideoElement.dispatchEvent(new Event('ended'))
-
-      // Wait for the promise to resolve
-      const audioBlob = await resultPromise
-
-      expect(audioBlob).toBeInstanceOf(Blob)
-      expect(audioBlob.type).toBe('audio/webm;codecs=opus')
-    })
+  test('Video to audio extraction creates valid audio blob', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    // Simulate loadedmetadata event
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    // Simulate ended event
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    const result = await resultPromise
+    
+    expect(result).toBeInstanceOf(Blob)
+    expect(result.type).toBe('audio/webm')
   })
 
-  describe('Extraction handles common video formats', () => {
-    it('should work with video/mp4 format', async () => {
-      const videoFile = new File(['mock video content'], 'test-video.mp4', { type: 'video/mp4' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-      await new Promise(resolve => setTimeout(resolve, 0))
-      capturedVideoElement.dispatchEvent(new Event('ended'))
-
-      const audioBlob = await resultPromise
-
-      expect(audioBlob).toBeInstanceOf(Blob)
-      expect(audioBlob.type).toMatch(/^audio\/webm/)
-    })
-
-    it('should work with video/webm format', async () => {
-      const videoFile = new File(['mock video content'], 'test-video.webm', { type: 'video/webm' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-      await new Promise(resolve => setTimeout(resolve, 0))
-      capturedVideoElement.dispatchEvent(new Event('ended'))
-
-      const audioBlob = await resultPromise
-
-      expect(audioBlob).toBeInstanceOf(Blob)
-      expect(audioBlob.type).toMatch(/^audio\/webm/)
-    })
-
-    it('should work with video/quicktime format', async () => {
-      const videoFile = new File(['mock video content'], 'test-video.mov', { type: 'video/quicktime' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-      await new Promise(resolve => setTimeout(resolve, 0))
-      capturedVideoElement.dispatchEvent(new Event('ended'))
-
-      const audioBlob = await resultPromise
-
-      expect(audioBlob).toBeInstanceOf(Blob)
-      expect(audioBlob.type).toMatch(/^audio\/webm/)
-    })
+  test('Extraction handles common video formats', async () => {
+    const videoFile = new File(['video content'], 'test.mov', { type: 'video/quicktime' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    const result = await resultPromise
+    
+    expect(result).toBeInstanceOf(Blob)
   })
 
-  describe('Extraction rejects invalid video input', () => {
-    it('should reject with error message when video element dispatches error event', async () => {
-      const videoFile = new File(['mock video content'], 'corrupted-video.mp4', { type: 'video/mp4' })
+  test('Extraction rejects invalid video input', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    // Simulate error event
+    const errorCallback = eventListeners['error'][0]
+    errorCallback()
+    
+    await expect(resultPromise).rejects.toThrow('Video loading failed')
+  })
 
-      const resultPromise = videoToAudio(videoFile)
+  test('Longer video duration does not trigger premature timeout', async () => {
+    const videoFile = new File(['video content'], 'long-video.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    // Simulate loadedmetadata event with a 45-second video duration
+    mockVideoElement.duration = 45
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    // Wait past the old 10-second mark (simulating 45 seconds of processing time)
+    // The new timeout should be 45 * 1000 + 15000 = 47000ms, so waiting 50 seconds
+    await new Promise(resolve => setTimeout(resolve, 50))
+    
+    // Simulate ended event (which should have cleared the timeout)
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    const result = await resultPromise
+    
+    expect(result).toBeInstanceOf(Blob)
+    expect(result.type).toBe('audio/webm')
+  })
 
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      // Simulate error event - use Object.defineProperty since jsdom's error property may be read-only
-      Object.defineProperty(capturedVideoElement, 'error', {
-        value: { message: 'Media decode error' },
-        configurable: true
-      })
-      capturedVideoElement.dispatchEvent(new Event('error'))
+  test('Handles video with missing or invalid duration gracefully', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    // Simulate loadedmetadata event with invalid duration (Infinity)
+    mockVideoElement.duration = Infinity
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    // Simulate ended event quickly
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    const result = await resultPromise
+    
+    expect(result).toBeInstanceOf(Blob)
+  })
 
-      await expect(resultPromise).rejects.toThrow('Video loading failed: Media decode error')
-    })
+  test('Timeout fires with descriptive error message when processing takes too long', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    // Simulate loadedmetadata event with a very long video duration
+    mockVideoElement.duration = 3600 // 1 hour
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    // Wait past the timeout (3600 * 1000 + 15000 = 3615000ms)
+    // Instead, we'll just wait 20 seconds which should trigger the initial 10s timeout
+    // since the duration-based timeout would be 1 hour
+    await new Promise(resolve => setTimeout(resolve, 15000))
+    
+    await expect(resultPromise).rejects.toThrow('Video processing timed out')
+  })
 
-    it('should reject with timeout error when video processing takes too long', async () => {
-      vi.useFakeTimers()
+  test('Video element is not muted so real audio flows into Web Audio graph', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    await resultPromise
+    
+    // Verify video.muted is false so createMediaElementSource receives real audio
+    expect(mockVideoElement.muted).toBe(false)
+  })
 
-      const videoFile = new File(['mock video content'], 'slow-video.mp4', { type: 'video/mp4' })
-
-      const resultPromise = videoToAudio(videoFile)
-
-      // capturedVideoElement is set by the createElement spy in beforeEach
-      // Simulate loadedmetadata event but don't dispatch ended
-      capturedVideoElement.dispatchEvent(new Event('loadedmetadata'))
-
-      // Advance time by 10 seconds (the timeout duration)
-      vi.advanceTimersByTime(10000)
-
-      await expect(resultPromise).rejects.toThrow('Video processing timed out after 10 seconds')
-    })
+  test('GainNode is created with zero gain and connected for speaker silence', async () => {
+    const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
+    
+    const resultPromise = videoToAudio(videoFile)
+    
+    const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
+    loadedMetadataCallback()
+    
+    const endedCallback = eventListeners['ended'][0]
+    endedCallback()
+    
+    await resultPromise
+    
+    // Verify a GainNode was created with zero gain
+    expect(mockAudioContext._gainNodes.length).toBeGreaterThan(0)
+    const gainNode = mockAudioContext._gainNodes[0]
+    expect(gainNode.gain.value).toBe(0)
+    
+    // Verify the gain node was connected to the audio context destination
+    expect(gainNode.connect).toHaveBeenCalled()
   })
 })
