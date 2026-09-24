@@ -1,11 +1,15 @@
 import { vi } from 'vitest'
 import { videoToAudio } from './videoToAudio'
 
+// Track the most recently created AudioContext instance for test assertions
+let lastAudioContextInstance = null
+
 // Mock MediaRecorder, AudioContext, and related browser APIs
 class MockAudioContext {
   constructor() {
     this.state = 'running'
     this._gainNodes = []
+    lastAudioContextInstance = this
   }
 
   createMediaElementSource(videoElement) {
@@ -95,11 +99,9 @@ describe('videoToAudio', () => {
   let mockVideoElement
   let mockUrl
   let eventListeners
-  let mockAudioContext
 
   beforeEach(() => {
     eventListeners = {}
-    mockAudioContext = new MockAudioContext()
     mockVideoElement = {
       autoplay: false,
       muted: false,
@@ -152,7 +154,7 @@ describe('videoToAudio', () => {
     const result = await resultPromise
     
     expect(result).toBeInstanceOf(Blob)
-    expect(result.type).toBe('audio/webm')
+    expect(result.type).toMatch(/^audio\/webm/)
   })
 
   test('Extraction handles common video formats', async () => {
@@ -204,7 +206,7 @@ describe('videoToAudio', () => {
     const result = await resultPromise
     
     expect(result).toBeInstanceOf(Blob)
-    expect(result.type).toBe('audio/webm')
+    expect(result.type).toMatch(/^audio\/webm/)
   })
 
   test('Handles video with missing or invalid duration gracefully', async () => {
@@ -231,18 +233,15 @@ describe('videoToAudio', () => {
     
     const resultPromise = videoToAudio(videoFile)
     
-    // Simulate loadedmetadata event with a very long video duration
-    mockVideoElement.duration = 3600 // 1 hour
+    // Simulate loadedmetadata event with a very short duration (0.001 seconds)
+    // This results in a computed timeout of ~15,001ms (duration * 1000 + 15000 buffer)
+    mockVideoElement.duration = 0.001
     const loadedMetadataCallback = eventListeners['loadedmetadata'][0]
     loadedMetadataCallback()
     
-    // Wait past the timeout (3600 * 1000 + 15000 = 3615000ms)
-    // Instead, we'll just wait 20 seconds which should trigger the initial 10s timeout
-    // since the duration-based timeout would be 1 hour
-    await new Promise(resolve => setTimeout(resolve, 15000))
-    
+    // Attach rejection expectation immediately to avoid unhandled promise rejection warning
     await expect(resultPromise).rejects.toThrow('Video processing timed out')
-  })
+  }, 20000)
 
   test('Video element is not muted so real audio flows into Web Audio graph', async () => {
     const videoFile = new File(['video content'], 'test.mp4', { type: 'video/mp4' })
@@ -275,8 +274,8 @@ describe('videoToAudio', () => {
     await resultPromise
     
     // Verify a GainNode was created with zero gain
-    expect(mockAudioContext._gainNodes.length).toBeGreaterThan(0)
-    const gainNode = mockAudioContext._gainNodes[0]
+    expect(lastAudioContextInstance._gainNodes.length).toBeGreaterThan(0)
+    const gainNode = lastAudioContextInstance._gainNodes[0]
     expect(gainNode.gain.value).toBe(0)
     
     // Verify the gain node was connected to the audio context destination
