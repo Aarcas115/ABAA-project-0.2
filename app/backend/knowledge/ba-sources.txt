@@ -1,0 +1,41 @@
+ABAA elicitation notes. Original paraphrased summaries of common business analysis practice, written for the gap-analysis stage. Not copied from any book or standard.
+
+## Spotting Missing Information in Meeting Transcripts
+
+Meetings rarely say everything. Read a transcript for absence as well as presence: a process described with no owner, a number with no unit or source, a system named without saying how it is reached, a deadline with no reason behind it. Watch for statements that skip a step, such as "then it just shows up in the report", because the skipped step is often where a requirement hides. Note topics that were raised and dropped without a decision, and any moment where someone promised to check something later. Each of these is a candidate gap. A requirement that depends on such a gap should be treated as unsettled instead of being filled in with a guess.
+
+## Clarifying Question Patterns and Rationale
+
+A good clarifying question is short, has a single subject, and can be answered from the client's own experience. Offer a few likely answers plus an open option, because people react to concrete choices faster than to a blank prompt. Pair every question with a one-sentence reason explaining what the answer unlocks, for example that it decides how records will be stored. Avoid questions that hint at the preferred answer or bundle several issues together. Ask about the situation before the solution: who does this, how often, and what happens today. Put first the questions that later work depends on most, and let the client defer any they cannot answer yet, recording it as an open item so it is not lost.
+
+## Ambiguity Signal Words
+
+Certain words hide missing detail. Relative terms such as fast, easy, large, soon, or user-friendly have no measurable meaning until a number or example is attached. Vague quantifiers like some, several, many, or regularly need a count or a frequency. Lists that end in "etc." or "and so on" leave the scope undefined. Passive phrasing such as "the report is sent" never says who or what sends it. Words like should, might, or ideally blur whether something is required or only wanted. Pronouns with unclear referents, such as "it" or "that system", may point to more than one thing. When one of these appears in a candidate requirement, ask for a measurable value, a named actor, or a concrete example.
+
+## Assumptions, Constraints, and Dependencies
+
+Three kinds of background statement shape a project and are easily lost. An assumption is something believed true but not confirmed, such as a partner's data being available. A constraint is a fixed limit on the solution, like a budget ceiling, a mandated tool, a regulation, or a hard date. A dependency is something outside the team's control that the work needs, such as another team's delivery or a third-party service. When a participant says "we already have", "we can't", or "as long as", record which of the three it is and who confirmed it. Unconfirmed assumptions should become questions. Dependencies deserve an owner and a needed-by date, and constraints should be checked against any requirement they might quietly contradict.
+
+## Prompting for Quality Expectations
+
+People describe what they want a system to do and forget how well it must do it. Draw out quality expectations with everyday scenarios: how many people use it at once during the busiest hour, how long a wait feels acceptable, what happens if it is down for an hour, who must never see certain information, how long records must be kept, and which devices and languages matter. Ask for a number or threshold wherever possible, and ask what would count as failure. Regulated industries often bring compliance duties that nobody mentions until asked. Also ask about growth, such as what volume may look like in a year. The answers turn adjectives into measurable targets.
+
+## Prompting for Information the System Handles
+
+Questions about information begin with which facts the business must keep track of and where they come from today. Ask what the key records are, which details are mandatory, who supplies or enters them, and how accurate and current they need to be. Find out where the information lives now: spreadsheets, another application, or paper. Ask how much history exists, whether old records must be carried over, how long they must be retained, and who may view, change, or delete them. Ask about sensitive details and the rules that govern them. A statement like "the report shows sales by region" is incomplete until the source of those figures and how often they refresh are known.
+
+## Prompting for Integration Points
+
+Whenever a participant mentions another system, a screen someone will use, or a document handed to someone else, follow up. For each connection ask which side starts the exchange, what information moves, in which direction, how often, and in what format. Ask who owns the other system and whether documentation or test access exists. For screens, ask who uses them, on which device, and what the person is trying to accomplish. For outputs such as reports or emails, ask who receives them and what they do next. Note existing tools people will keep using alongside the new one. A counterpart system that is mentioned but never named is a strong sign of a missing detail.
+
+## Prompting for Communication and Network Needs
+
+Gaps in this area show up when work happens in more than one place or across organizations. Ask where the system will run and where its users sit: an office, home, the field, or a factory floor. Ask whether users will sometimes have weak or no network access and what should still work then. Ask how systems talk to each other, whether by instant notification, scheduled batch, or manual file exchange, and what should happen when a message is lost or arrives late. Find out about network restrictions such as firewalls, private networks, or approved-vendor lists, and whether the client mandates a particular secure channel or sign-in method.
+
+## Identifying Stakeholders and Roles
+
+Every requirement should trace back to a person or group who needs it. During a meeting, list who attended and what each person seems to care about, then ask who is missing: people who will use the result daily, approve spending, maintain the system afterwards, or be affected without having been invited. Distinguish a role from a name, since several people may share a role and one person may hold several. Note who has authority to decide when opinions differ. A need voiced by someone without decision rights should be confirmed with someone who has them. Titles mentioned in the meeting make a starting roster that the team keeps updated.
+
+## Basic Prioritization
+
+Clients often call everything essential, so prioritization needs prompts. A simple approach sorts each item as must have, should have, could have, or not this time, with a shared meaning for each label. Ask what happens if the item is missing at launch, whether a manual workaround exists, and which deadline or event it is tied to. Compare items against each other instead of rating them one at a time. Record who made each call and why, because reasons matter when circumstances change. An item with unresolved gaps should carry that fact along, since a high-priority item with missing details is a scheduling risk. Revisit priorities whenever new information arrives.
