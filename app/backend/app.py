@@ -3,9 +3,10 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 import analysis_pipeline
+import rag_engine
 
 # Load environment variables
 load_dotenv()
@@ -14,6 +15,9 @@ load_dotenv()
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 if not OPENROUTER_API_KEY:
     raise ValueError("OPENROUTER_API_KEY environment variable is required but not set")
+
+# Load the RAG corpus at cold start (never raises; an empty corpus is reported by /api/rag/query)
+rag_engine.get_engine()
 
 # Create FastAPI app instance
 app = FastAPI()
@@ -30,6 +34,11 @@ app.add_middleware(
 # Request body model
 class TranscriptRequest(BaseModel):
     transcript: str
+
+# RAG query request model
+class RagQueryRequest(BaseModel):
+    query: str
+    top_k: int = Field(default=3, ge=1, le=10)
 
 # Health check endpoint
 @app.get("/")
@@ -63,6 +72,26 @@ async def analyze_transcript(request: TranscriptRequest):
             status_code=500,
             detail={"error": str(e)}
         )
+
+# RAG query endpoint
+@app.post("/api/rag/query")
+async def rag_query(request: RagQueryRequest):
+    # Validate query is present and non-empty
+    if not request.query or not request.query.strip():
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "Query field is required and must be non-empty"}
+        )
+
+    # Call get_engine() on every request so tests can patch it
+    engine = rag_engine.get_engine()
+    if engine.chunk_count == 0:
+        raise HTTPException(
+            status_code=503,
+            detail={"error": "RAG corpus is unavailable"}
+        )
+
+    return {"results": engine.search(request.query, request.top_k)}
 
 # Global exception handler for HTTPException
 @app.exception_handler(HTTPException)
