@@ -206,13 +206,16 @@ Phase 4 extends ABAA with enhanced business-analysis rigor and a complete UI/UX 
 
 <task id="17">
   <name>RAG Layer for BA Best Practices</name>
-  <objective>Implement internal RAG layer that consults BA best-practice sources during gap-analysis. The RAG implementation must stay within the "no database" hard constraint — using static in-memory/keyword-based retrieval over pre-loaded text rather than a vector database or persistent embeddings store. rag_engine.py loads BOTH docs/context/ba-sources.txt AND docs/context/ba-standards.md as its corpus — ba-standards.md supplies the requirement-type taxonomy and IEEE 830 confidence-scoring rubric that Tasks 16 and 18 need at runtime.</objective>
+  <objective>Implement internal RAG layer that consults BA best-practice sources during gap-analysis. The RAG implementation must stay within the "no database" hard constraint — using static in-memory/keyword-based retrieval over pre-loaded text rather than a vector database or persistent embeddings store. rag_engine.py loads BOTH app/backend/knowledge/ba-sources.txt AND app/backend/knowledge/ba-standards.md as its corpus (a backend-local copy of docs/context/ba-standards.md, kept identical by a pytest drift test, because only files inside app/backend are deployed to the backend's Vercel function) — ba-standards.md supplies the requirement-type taxonomy and IEEE 830 confidence-scoring rubric that Tasks 16 and 18 need at runtime.</objective>
   <files>
     <create>
       - app/backend/rag_engine.py
     </create>
     <create>
-      - docs/context/ba-sources.txt
+      - app/backend/knowledge/ba-sources.txt
+    </create>
+    <create>
+      - app/backend/knowledge/ba-standards.md
     </create>
     <modify>
       - app/backend/app.py
@@ -226,7 +229,8 @@ Phase 4 extends ABAA with enhanced business-analysis rigor and a complete UI/UX 
     <criterion>RAG engine loads BA source documents at startup</criterion>
     <criterion>Gap analysis can query RAG for relevant best practices</criterion>
     <criterion>RAG module is called from a live API route in app.py</criterion>
-    <criterion>RAG engine's corpus includes docs/context/ba-standards.md alongside ba-sources.txt, and its taxonomy/rubric content is retrievable by the gap-analysis and classification steps</criterion>
+    <criterion>RAG engine's corpus includes ba-standards.md (backend-local copy in app/backend/knowledge/, identical to docs/context/ba-standards.md) alongside ba-sources.txt, and its taxonomy/rubric content is retrievable by the gap-analysis and classification steps</criterion>
+    <criterion>Corpus files live inside app/backend/ so they ship with the deployed backend; a copy that drifts from docs/context/ba-standards.md fails a test</criterion>
   </acceptance_criteria>
   <complexity>L</complexity>
   <dependencies>Task 11</dependencies>
@@ -353,7 +357,7 @@ After all tasks complete:
 - [ ] Stakeholder approval on Phase 4 scope
 - [ ] Definition of "missing information" patterns for gap-analysis
 - [ ] BA source documents for RAG layer
-- [ ] docs/context/ba-sources.txt must contain paraphrased/summarized best-practice notes only — never verbatim copyrighted text from BA reference books
+- [ ] app/backend/knowledge/ba-sources.txt must contain paraphrased/summarized best-practice notes only — never verbatim copyrighted text from BA reference books
 - [ ] **OUT OF SCOPE for Phase 4**: Re-running pipeline on new transcript to append to existing project requirements (candidate for future phase)
 - [ ] Execution order for Phase 4: Task 17 (RAG layer) is built immediately after Task 11, before Tasks 12-15 (UI chain), since Task 17 now blocks both Task 16 and Task 18 and carries the highest complexity (L) of the remaining tasks. Tasks 12-15 have no dependency on Task 17 and can proceed in any order relative to it, but this project sequences Task 17 first to de-risk the highest-complexity item early.
 
